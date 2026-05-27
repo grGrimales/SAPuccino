@@ -1,2 +1,2 @@
 # SAPuccino
-Hack the Ope- Desafio Café Tracker
+Hack the Open - Desafio Café Tracker
