@@ -1,19 +1,26 @@
-using System.Globalization;
 using System.Text;
-using CoffeeTracker.Api.Domain.Entities;
-using CoffeeTracker.Api.Domain.Interfaces;
+using System.Text.Json;
+using CoffeeTracker.Api.Application.State;
+using CoffeeTracker.Api.Infrastructure.RealTime;
 using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Extensions.ManagedClient;
 
 namespace CoffeeTracker.Api.Infrastructure.Mqtt;
 
+/// <summary>
+/// Assinante MQTT (fase 1). A máquina publica o indicador H1: quando passa de 0 para 1
+/// significa que começou a preparar um café. Detectamos essa borda de subida e delegamos
+/// no <see cref="CoffeeStatusNotifier"/> (atualiza estado, empurra via SignalR e persiste).
+/// </summary>
 public sealed class MqttSubscriberService(
     IConfiguration configuration,
-    IServiceScopeFactory scopeFactory,
-    CoffeeDetector detector,
+    MachineStateTracker stateTracker,
+    CoffeeStatusNotifier notifier,
     ILogger<MqttSubscriberService> logger) : BackgroundService
 {
+    private int _lastH1;
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         var broker = configuration["Mqtt:Broker"] ?? "localhost";
@@ -25,48 +32,21 @@ public sealed class MqttSubscriberService(
         var mqttFactory = new MqttFactory();
         var mqttClient = mqttFactory.CreateManagedMqttClient();
 
-        mqttClient.ApplicationMessageReceivedAsync += async args =>
+        mqttClient.ApplicationMessageReceivedAsync += args =>
+            HandleMessageAsync(args, stoppingToken);
+
+        mqttClient.ConnectedAsync += async _ =>
         {
-            var payload = Encoding.UTF8.GetString(args.ApplicationMessage.PayloadSegment);
-
-            if (!decimal.TryParse(payload, NumberStyles.Number, CultureInfo.InvariantCulture, out var weightInGrams))
-            {
-                logger.LogWarning("Invalid MQTT payload received: {Payload}", payload);
-                return;
-            }
-
-            var coffeeEvent = new CoffeeEvent
-            {
-                WeightInGrams = weightInGrams,
-                HasCoffee = detector.HasCoffee(weightInGrams),
-                OccurredAtUtc = DateTime.UtcNow
-            };
-
-            using var scope = scopeFactory.CreateScope();
-            var coffeeEventService = scope.ServiceProvider.GetRequiredService<ICoffeeEventService>();
-
-            await coffeeEventService.RegisterAsync(coffeeEvent, stoppingToken);
-
-            logger.LogInformation(
-                "Coffee event registered from MQTT. Weight: {WeightInGrams}, HasCoffee: {HasCoffee}",
-                coffeeEvent.WeightInGrams,
-                coffeeEvent.HasCoffee);
-        };
-
-        mqttClient.ConnectedAsync += _ =>
-        {
+            stateTracker.SetBrokerConnected(true);
             logger.LogInformation("Connected to MQTT broker {Broker}:{Port}", broker, port);
-            return Task.CompletedTask;
+            await notifier.BroadcastStatusAsync(stoppingToken);
         };
 
-        mqttClient.DisconnectedAsync += args =>
+        mqttClient.DisconnectedAsync += async args =>
         {
-            logger.LogWarning(
-                args.Exception,
-                "Disconnected from MQTT broker. Reason: {Reason}",
-                args.Reason);
-
-            return Task.CompletedTask;
+            stateTracker.SetBrokerConnected(false);
+            logger.LogWarning(args.Exception, "Disconnected from MQTT broker. Reason: {Reason}", args.Reason);
+            await notifier.BroadcastStatusAsync(stoppingToken);
         };
 
         var clientOptionsBuilder = new MqttClientOptionsBuilder()
@@ -98,9 +78,83 @@ public sealed class MqttSubscriberService(
         }
         catch (OperationCanceledException)
         {
-            // Application is shutting down.
+            // A aplicação está sendo encerrada.
         }
 
         await mqttClient.StopAsync();
+    }
+
+    private async Task HandleMessageAsync(MqttApplicationMessageReceivedEventArgs args, CancellationToken stoppingToken)
+    {
+        var payload = Encoding.UTF8.GetString(args.ApplicationMessage.PayloadSegment);
+
+        if (!TryParseH1(payload, out var h1))
+        {
+            logger.LogWarning("Could not read H1 from MQTT payload: {Payload}", payload);
+            return;
+        }
+
+        // Um café = borda de subida de H1 (0 -> 1).
+        var isNewCoffee = _lastH1 == 0 && h1 == 1;
+        _lastH1 = h1;
+
+        if (!isNewCoffee)
+        {
+            return;
+        }
+
+        var occurredAtUtc = DateTime.UtcNow;
+        logger.LogInformation("Coffee detected from MQTT (H1 0->1) at {OccurredAtUtc}", occurredAtUtc);
+        await notifier.RegisterCoffeeAsync(occurredAtUtc, stoppingToken);
+    }
+
+    /// <summary>
+    /// Extrai o indicador H1 do payload. Tolerante porque ainda não fixamos o formato real:
+    /// aceita "0"/"1" direto ou um JSON que contenha uma propriedade "H1". AJUSTAR com uma amostra real.
+    /// </summary>
+    private static bool TryParseH1(string payload, out int h1)
+    {
+        h1 = 0;
+        var trimmed = payload.Trim();
+
+        if (int.TryParse(trimmed, out var direct) && direct is 0 or 1)
+        {
+            h1 = direct;
+            return true;
+        }
+
+        try
+        {
+            using var doc = JsonDocument.Parse(trimmed);
+            if (doc.RootElement.ValueKind == JsonValueKind.Object)
+            {
+                foreach (var prop in doc.RootElement.EnumerateObject())
+                {
+                    if (!prop.Name.Equals("H1", StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    if (prop.Value.ValueKind == JsonValueKind.Number && prop.Value.TryGetInt32(out var num))
+                    {
+                        h1 = num == 0 ? 0 : 1;
+                        return true;
+                    }
+
+                    if (prop.Value.ValueKind == JsonValueKind.String &&
+                        int.TryParse(prop.Value.GetString(), out var str))
+                    {
+                        h1 = str == 0 ? 0 : 1;
+                        return true;
+                    }
+                }
+            }
+        }
+        catch (JsonException)
+        {
+            // Não é um JSON válido.
+        }
+
+        return false;
     }
 }

@@ -17,9 +17,4 @@ public sealed class CoffeeEventService(ICoffeeEventRepository repository) : ICof
     {
         return repository.GetRecentAsync(take, cancellationToken);
     }
-
-    public Task<IReadOnlyCollection<DailyMetric>> GetDailyMetricsAsync(CancellationToken cancellationToken = default)
-    {
-        return repository.GetDailyMetricsAsync(cancellationToken);
-    }
 }

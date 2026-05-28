@@ -6,5 +6,4 @@ public interface ICoffeeEventService
 {
     Task RegisterAsync(CoffeeEvent coffeeEvent, CancellationToken cancellationToken = default);
     Task<IReadOnlyCollection<CoffeeEvent>> GetRecentAsync(int take = 50, CancellationToken cancellationToken = default);
-    Task<IReadOnlyCollection<DailyMetric>> GetDailyMetricsAsync(CancellationToken cancellationToken = default);
 }

@@ -26,12 +26,22 @@ public sealed class CoffeeEventRepository(AppDbContext dbContext) : ICoffeeEvent
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<IReadOnlyCollection<DailyMetric>> GetDailyMetricsAsync(
+    public async Task<int> CountBetweenAsync(
+        DateTime fromUtc,
+        DateTime toUtc,
         CancellationToken cancellationToken = default)
     {
-        return await dbContext.DailyMetrics
+        return await dbContext.CoffeeEvents
             .AsNoTracking()
-            .OrderByDescending(x => x.Date)
-            .ToListAsync(cancellationToken);
+            .CountAsync(x => x.OccurredAtUtc >= fromUtc && x.OccurredAtUtc < toUtc, cancellationToken);
+    }
+
+    public async Task<DateTime?> GetLastOccurredAtUtcAsync(CancellationToken cancellationToken = default)
+    {
+        return await dbContext.CoffeeEvents
+            .AsNoTracking()
+            .OrderByDescending(x => x.OccurredAtUtc)
+            .Select(x => (DateTime?)x.OccurredAtUtc)
+            .FirstOrDefaultAsync(cancellationToken);
     }
 }
