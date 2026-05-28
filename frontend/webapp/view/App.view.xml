@@ -1,0 +1,23 @@
+<mvc:View
+    controllerName="sapuccino.controller.App"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true">
+    <App id="appRoot">
+        <pages>
+            <Page id="mainPage" title="SAPuccino ☕">
+                <content>
+                    <VBox alignItems="Center" justifyContent="Center" class="sapUiLargeMargin">
+                        <Title text="Hola mundo desde el FE SAPUI5 ☕" level="H1" class="sapUiMediumMarginBottom"/>
+                        <Button
+                            id="pingButton"
+                            text="Probar conexión con el BE"
+                            type="Emphasized"
+                            press=".onPingBackend"/>
+                        <Text id="backendStatus" text="{/backendMessage}" class="sapUiMediumMarginTop"/>
+                    </VBox>
+                </content>
+            </Page>
+        </pages>
+    </App>
+</mvc:View>

@@ -1,0 +1,35 @@
+{
+    "_version": "1.60.0",
+    "sap.app": {
+        "id": "sapuccino",
+        "type": "application",
+        "title": "SAPuccino - Coffee Tracker",
+        "description": "Frontend SAPUI5 para el hackatón",
+        "applicationVersion": {
+            "version": "0.0.1"
+        }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "rootView": {
+            "viewName": "sapuccino.view.App",
+            "type": "XML",
+            "id": "app",
+            "async": true
+        },
+        "dependencies": {
+            "minUI5Version": "1.120.0",
+            "libs": {
+                "sap.m": {}
+            }
+        },
+        "models": {}
+    }
+}

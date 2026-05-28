@@ -1,0 +1,13 @@
+{
+  "name": "sapuccino-ui5",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Frontend SAPUI5 para SAPuccino - Coffee Tracker",
+  "scripts": {
+    "start": "ui5 serve --port 8080 -o index.html",
+    "serve": "ui5 serve --port 8080"
+  },
+  "devDependencies": {
+    "@ui5/cli": "^4.0.0"
+  }
+}
