@@ -7,14 +7,12 @@
         <pages>
             <Page id="mainPage" title="SAPuccino ☕">
                 <content>
-                    <VBox alignItems="Center" justifyContent="Center" class="sapUiLargeMargin">
-                        <Title text="Hola mundo desde el FE SAPUI5 ☕" level="H1" class="sapUiMediumMarginBottom"/>
-                        <Button
-                            id="pingButton"
-                            text="Probar conexión con el BE"
-                            type="Emphasized"
-                            press=".onPingBackend"/>
-                        <Text id="backendStatus" text="{/backendMessage}" class="sapUiMediumMarginTop"/>
+                    <VBox class="sapUiLargeMargin">
+                        <Title text="Status da máquina de café" level="H2" class="sapUiMediumMarginBottom"/>
+                        <Text text="Estado: {/machineStateText}" class="sapUiSmallMarginBottom"/>
+                        <Text text="Cafés hoje: {/coffeesToday}" class="sapUiSmallMarginBottom"/>
+                        <Text text="Última utilização: {/lastUsedText}" class="sapUiSmallMarginBottom"/>
+                        <Text text="{/connectionText}" class="sapUiMediumMarginTop"/>
                     </VBox>
                 </content>
             </Page>
