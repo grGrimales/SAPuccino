@@ -1,5 +1,5 @@
+using System.Globalization;
 using System.Text;
-using System.Text.Json;
 using CoffeeTracker.Api.Application.State;
 using CoffeeTracker.Api.Infrastructure.RealTime;
 using MQTTnet;
@@ -19,7 +19,8 @@ public sealed class MqttSubscriberService(
     CoffeeStatusNotifier notifier,
     ILogger<MqttSubscriberService> logger) : BackgroundService
 {
-    private int _lastH1;
+    // -1 = desconhecido (evita contar um café falso na primeira mensagem ao iniciar).
+    private int _lastH1 = -1;
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -88,11 +89,13 @@ public sealed class MqttSubscriberService(
     {
         var payload = Encoding.UTF8.GetString(args.ApplicationMessage.PayloadSegment);
 
-        if (!TryParseH1(payload, out var h1))
+        if (!TryParseH1(payload, out var h1, out var occurredAtUtc))
         {
-            logger.LogWarning("Could not read H1 from MQTT payload: {Payload}", payload);
+            // Não é um apontamento de status H1 (pode ser outro tipo de dado no mesmo topic).
             return;
         }
+
+        logger.LogInformation("H1 status received: {H1} at {OccurredAtUtc}", h1, occurredAtUtc);
 
         // Um café = borda de subida de H1 (0 -> 1).
         var isNewCoffee = _lastH1 == 0 && h1 == 1;
@@ -103,56 +106,54 @@ public sealed class MqttSubscriberService(
             return;
         }
 
-        var occurredAtUtc = DateTime.UtcNow;
         logger.LogInformation("Coffee detected from MQTT (H1 0->1) at {OccurredAtUtc}", occurredAtUtc);
         await notifier.RegisterCoffeeAsync(occurredAtUtc, stoppingToken);
     }
 
     /// <summary>
-    /// Extrai o indicador H1 do payload. Tolerante porque ainda não fixamos o formato real:
-    /// aceita "0"/"1" direto ou um JSON que contenha uma propriedade "H1". AJUSTAR com uma amostra real.
+    /// Lê o indicador H1 do payload de DADOSAPONTAMENTO, no formato
+    /// "&lt;timestamp&gt;|&lt;cod&gt;|&lt;H1&gt;|&lt;rótulo&gt;|&lt;descrição&gt;|" (ex.:
+    /// "2026-05-27T10:47:54.000-03:00|99|1|Status (H1)|Machine status signal|").
+    /// Confirma que é um apontamento de status H1 e usa o timestamp real da máquina.
+    /// Também aceita um payload "0"/"1" direto (topic /IoT/SAACE/H1) como alternativa.
     /// </summary>
-    private static bool TryParseH1(string payload, out int h1)
+    private static bool TryParseH1(string payload, out int h1, out DateTime occurredAtUtc)
     {
         h1 = 0;
-        var trimmed = payload.Trim();
+        occurredAtUtc = DateTime.UtcNow;
 
+        var trimmed = payload.Trim();
+        if (string.IsNullOrEmpty(trimmed))
+        {
+            return false;
+        }
+
+        if (trimmed.Contains('|'))
+        {
+            var parts = trimmed.Split('|');
+
+            // Garante que é o apontamento de status H1 (o rótulo contém "H1").
+            var isH1Record = parts.Length > 3 && parts[3].Contains("H1", StringComparison.OrdinalIgnoreCase);
+            if (!isH1Record || !int.TryParse(parts[2].Trim(), out var value))
+            {
+                return false;
+            }
+
+            h1 = value == 0 ? 0 : 1;
+
+            if (DateTimeOffset.TryParse(parts[0].Trim(), CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out var timestamp))
+            {
+                occurredAtUtc = timestamp.UtcDateTime;
+            }
+
+            return true;
+        }
+
+        // Alternativa: payload "0"/"1" direto.
         if (int.TryParse(trimmed, out var direct) && direct is 0 or 1)
         {
             h1 = direct;
             return true;
-        }
-
-        try
-        {
-            using var doc = JsonDocument.Parse(trimmed);
-            if (doc.RootElement.ValueKind == JsonValueKind.Object)
-            {
-                foreach (var prop in doc.RootElement.EnumerateObject())
-                {
-                    if (!prop.Name.Equals("H1", StringComparison.OrdinalIgnoreCase))
-                    {
-                        continue;
-                    }
-
-                    if (prop.Value.ValueKind == JsonValueKind.Number && prop.Value.TryGetInt32(out var num))
-                    {
-                        h1 = num == 0 ? 0 : 1;
-                        return true;
-                    }
-
-                    if (prop.Value.ValueKind == JsonValueKind.String &&
-                        int.TryParse(prop.Value.GetString(), out var str))
-                    {
-                        h1 = str == 0 ? 0 : 1;
-                        return true;
-                    }
-                }
-            }
-        }
-        catch (JsonException)
-        {
-            // Não é um JSON válido.
         }
 
         return false;
