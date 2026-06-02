@@ -11,6 +11,7 @@ public sealed class MachineStateTracker(TimeZoneInfo timeZone)
 {
     private readonly object _gate = new();
     private bool _brokerConnected;
+    private bool _inUse;
     private DateTime? _lastUsedUtc;
     private DateOnly _countedLocalDate;
     private int _coffeesToday;
@@ -21,6 +22,21 @@ public sealed class MachineStateTracker(TimeZoneInfo timeZone)
         lock (_gate)
         {
             _brokerConnected = connected;
+        }
+    }
+
+    /// <summary>Atualiza se a máquina está preparando um café. Retorna true se o estado mudou.</summary>
+    public bool SetInUse(bool inUse)
+    {
+        lock (_gate)
+        {
+            if (_inUse == inUse)
+            {
+                return false;
+            }
+
+            _inUse = inUse;
+            return true;
         }
     }
 
@@ -64,6 +80,7 @@ public sealed class MachineStateTracker(TimeZoneInfo timeZone)
             return new CoffeeStatus
             {
                 MachineState = _brokerConnected ? "online" : "offline",
+                InUse = _inUse,
                 CoffeesToday = coffees,
                 LastUsedUtc = _lastUsedUtc
             };

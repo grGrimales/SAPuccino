@@ -8,6 +8,9 @@ public sealed record CoffeeStatus
     /// <summary>"online" se o backend está conectado ao broker MQTT, "offline" caso contrário.</summary>
     public required string MachineState { get; init; }
 
+    /// <summary>True enquanto a máquina está preparando um café (nível do indicador H1 = 1).</summary>
+    public required bool InUse { get; init; }
+
     /// <summary>Quantidade de cafés detectados no dia atual (fuso horário configurado).</summary>
     public required int CoffeesToday { get; init; }
 

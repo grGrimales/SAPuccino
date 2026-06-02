@@ -30,6 +30,13 @@ public sealed class CoffeeStatusNotifier(
         await PersistEventAsync(occurredAtUtc, cancellationToken);
     }
 
+    /// <summary>Atualiza se a máquina está preparando um café; só faz broadcast se o estado mudou.</summary>
+    public Task SetMachineInUseAsync(bool inUse, CancellationToken cancellationToken = default)
+    {
+        var changed = stateTracker.SetInUse(inUse);
+        return changed ? BroadcastStatusAsync(cancellationToken) : Task.CompletedTask;
+    }
+
     /// <summary>Envia o estado atual para todos os clientes conectados.</summary>
     public Task BroadcastStatusAsync(CancellationToken cancellationToken = default)
     {

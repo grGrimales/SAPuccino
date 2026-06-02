@@ -49,6 +49,8 @@ public sealed class MqttSubscriberService(
         mqttClient.DisconnectedAsync += async args =>
         {
             stateTracker.SetBrokerConnected(false);
+            stateTracker.SetInUse(false); // máquina offline não está "em uso"
+            _lastH1 = -1;                  // estado do H1 é desconhecido até reconectar
             logger.LogWarning(args.Exception, "Disconnected from MQTT broker. Reason: {Reason}", args.Reason);
             await RecordAvailabilityAsync(false, stoppingToken);
             await notifier.BroadcastStatusAsync(stoppingToken);
@@ -104,6 +106,9 @@ public sealed class MqttSubscriberService(
         // Um café = borda de subida de H1 (0 -> 1).
         var isNewCoffee = _lastH1 == 0 && h1 == 1;
         _lastH1 = h1;
+
+        // "Em uso" segue o nível atual do H1 (1 = preparando). Broadcast só quando muda.
+        await notifier.SetMachineInUseAsync(h1 == 1, stoppingToken);
 
         if (!isNewCoffee)
         {
