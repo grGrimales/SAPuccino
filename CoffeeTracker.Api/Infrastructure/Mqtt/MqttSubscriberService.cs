@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Text;
+using CoffeeTracker.Api.Application.Services;
 using CoffeeTracker.Api.Application.State;
 using CoffeeTracker.Api.Infrastructure.RealTime;
 using MQTTnet;
@@ -17,6 +18,7 @@ public sealed class MqttSubscriberService(
     IConfiguration configuration,
     MachineStateTracker stateTracker,
     CoffeeStatusNotifier notifier,
+    IServiceScopeFactory scopeFactory,
     ILogger<MqttSubscriberService> logger) : BackgroundService
 {
     // -1 = desconhecido (evita contar um café falso na primeira mensagem ao iniciar).
@@ -40,6 +42,7 @@ public sealed class MqttSubscriberService(
         {
             stateTracker.SetBrokerConnected(true);
             logger.LogInformation("Connected to MQTT broker {Broker}:{Port}", broker, port);
+            await RecordAvailabilityAsync(true, stoppingToken);
             await notifier.BroadcastStatusAsync(stoppingToken);
         };
 
@@ -47,6 +50,7 @@ public sealed class MqttSubscriberService(
         {
             stateTracker.SetBrokerConnected(false);
             logger.LogWarning(args.Exception, "Disconnected from MQTT broker. Reason: {Reason}", args.Reason);
+            await RecordAvailabilityAsync(false, stoppingToken);
             await notifier.BroadcastStatusAsync(stoppingToken);
         };
 
@@ -108,6 +112,24 @@ public sealed class MqttSubscriberService(
 
         logger.LogInformation("Coffee detected from MQTT (H1 0->1) at {OccurredAtUtc}", occurredAtUtc);
         await notifier.RegisterCoffeeAsync(occurredAtUtc, stoppingToken);
+    }
+
+    /// <summary>
+    /// Persiste uma transição de disponibilidade (melhor esforço). O serviço faz dedup,
+    /// então reconexões repetidas não geram registros duplicados.
+    /// </summary>
+    private async Task RecordAvailabilityAsync(bool isOnline, CancellationToken cancellationToken)
+    {
+        try
+        {
+            using var scope = scopeFactory.CreateScope();
+            var availability = scope.ServiceProvider.GetRequiredService<IAvailabilityService>();
+            await availability.RecordTransitionAsync(isOnline, DateTime.UtcNow, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Failed to persist availability transition (isOnline={IsOnline}).", isOnline);
+        }
     }
 
     /// <summary>

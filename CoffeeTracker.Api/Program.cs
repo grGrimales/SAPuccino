@@ -16,7 +16,7 @@ const string FrontendCorsPolicy = "FrontendCors";
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(FrontendCorsPolicy, policy =>
-        policy.WithOrigins("http://localhost:8080")
+        policy.WithOrigins("http://localhost:8080", "http://localhost:8030")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials());

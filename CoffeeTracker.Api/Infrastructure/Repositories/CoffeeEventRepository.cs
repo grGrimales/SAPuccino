@@ -36,6 +36,18 @@ public sealed class CoffeeEventRepository(AppDbContext dbContext) : ICoffeeEvent
             .CountAsync(x => x.OccurredAtUtc >= fromUtc && x.OccurredAtUtc < toUtc, cancellationToken);
     }
 
+    public async Task<IReadOnlyCollection<CoffeeEvent>> GetBetweenAsync(
+        DateTime fromUtc,
+        DateTime toUtc,
+        CancellationToken cancellationToken = default)
+    {
+        return await dbContext.CoffeeEvents
+            .AsNoTracking()
+            .Where(x => x.OccurredAtUtc >= fromUtc && x.OccurredAtUtc < toUtc)
+            .OrderBy(x => x.OccurredAtUtc)
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task<DateTime?> GetLastOccurredAtUtcAsync(CancellationToken cancellationToken = default)
     {
         return await dbContext.CoffeeEvents

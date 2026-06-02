@@ -21,10 +21,15 @@ public static class ServiceCollectionExtensions
         services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 
         services.AddScoped<ICoffeeEventRepository, CoffeeEventRepository>();
+        services.AddScoped<IAvailabilityEventRepository, AvailabilityEventRepository>();
         services.AddScoped<ICoffeeEventService, CoffeeEventService>();
+        services.AddScoped<IConsumptionReportService, ConsumptionReportService>();
+        services.AddScoped<IAvailabilityService, AvailabilityService>();
 
         var timeZoneId = configuration["App:TimeZone"] ?? "America/Sao_Paulo";
-        services.AddSingleton(new MachineStateTracker(ResolveTimeZone(timeZoneId)));
+        var timeZone = ResolveTimeZone(timeZoneId);
+        services.AddSingleton(timeZone);
+        services.AddSingleton(new MachineStateTracker(timeZone));
         services.AddSingleton<CoffeeStatusNotifier>();
 
         services.AddHostedService<MqttSubscriberService>();

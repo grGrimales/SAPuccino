@@ -29,6 +29,37 @@ git clone https://github.com/grGrimales/SAPuccino.git
 cd SAPuccino
 ```
 
+## Setup automático (recomendado)
+
+Na raiz do projeto, rode o script de instalação (Windows / PowerShell). Ele verifica
+os pré-requisitos, sobe o PostgreSQL (Docker ou nativo, o que estiver disponível),
+configura as credenciais (MQTT e banco) via **User Secrets** e instala as dependências
+de backend e frontend:
+
+```powershell
+.\setup.ps1
+```
+
+Depois, suba backend e frontend de uma vez (abre uma janela para cada):
+
+```powershell
+.\start.ps1            # frontend na 8080 (padrão)
+.\start.ps1 -UiPort 8030   # use outra porta se a 8080 estiver ocupada
+```
+
+Opções úteis do `setup.ps1`:
+
+```powershell
+.\setup.ps1 -DbMode docker      # força usar o docker-compose para o Postgres
+.\setup.ps1 -DbMode native      # força usar um PostgreSQL instalado localmente
+.\setup.ps1 -SkipMqtt           # pula o MQTT (máquina fica 'offline'; simulação funciona)
+```
+
+> O script nunca grava a senha do MQTT no repositório: ela é pedida no terminal (ou
+> passada via `-MqttPassword`) e guardada apenas em User Secrets, fora do Git.
+
+Prefere o passo a passo manual? Siga as seções abaixo.
+
 ## Início rápido (rodar localmente)
 
 Use **dois terminais**, a partir da raiz do projeto:

@@ -6,6 +6,7 @@ namespace CoffeeTracker.Api.Infrastructure.Persistence;
 public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
     public DbSet<CoffeeEvent> CoffeeEvents => Set<CoffeeEvent>();
+    public DbSet<AvailabilityEvent> AvailabilityEvents => Set<AvailabilityEvent>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -14,6 +15,15 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
             entity.ToTable("coffee_events");
             entity.HasKey(x => x.Id);
             entity.Property(x => x.OccurredAtUtc).IsRequired();
+            entity.HasIndex(x => x.OccurredAtUtc);
+        });
+
+        modelBuilder.Entity<AvailabilityEvent>(entity =>
+        {
+            entity.ToTable("availability_events");
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.OccurredAtUtc).IsRequired();
+            entity.Property(x => x.IsOnline).IsRequired();
             entity.HasIndex(x => x.OccurredAtUtc);
         });
     }
