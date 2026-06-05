@@ -31,6 +31,14 @@ public static class CoffeeEndpoints
             Results.Ok(await reports.GetReportAsync(days ?? 7, DateTime.UtcNow, cancellationToken)))
             .WithName("GetConsumptionReport");
 
+        // KPIs do dia (derivados do histórico): total, comparativo vs ontem, média horária,
+        // intervalo médio, tempo desde o último café e horário de pico de hoje.
+        group.MapGet("/dashboard", async (
+            IDashboardService dashboard,
+            CancellationToken cancellationToken) =>
+            Results.Ok(await dashboard.GetSummaryAsync(DateTime.UtcNow, cancellationToken)))
+            .WithName("GetDashboardSummary");
+
         // Relatório de disponibilidade: uptime, tempo online/offline, quedas e maior queda.
         // Ex.: GET /api/coffee/availability?days=7  (padrão 7 dias, limitado a 90).
         group.MapGet("/availability", async (

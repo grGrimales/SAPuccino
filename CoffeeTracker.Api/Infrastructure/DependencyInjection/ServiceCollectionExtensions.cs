@@ -25,6 +25,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ICoffeeEventService, CoffeeEventService>();
         services.AddScoped<IConsumptionReportService, ConsumptionReportService>();
         services.AddScoped<IAvailabilityService, AvailabilityService>();
+        services.AddScoped<IDashboardService, DashboardService>();
 
         var timeZoneId = configuration["App:TimeZone"] ?? "America/Sao_Paulo";
         var timeZone = ResolveTimeZone(timeZoneId);
