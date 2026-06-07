@@ -1,0 +1,200 @@
+/* Estilos do SAPuccino — replica o painel do diseño (Monitor + Detalhamento). */
+
+/* Fundo geral levemente acinzentado, como no diseño. */
+.sapuccinoApp {
+    background-color: #f3f4f6;
+}
+
+/* Cabeçalho da marca. */
+.brandTitle {
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    font-size: 1.25rem;
+}
+
+.liveDot {
+    color: #22c55e;
+    font-weight: 700;
+}
+
+.liveDotOffline {
+    color: #ef4444;
+    font-weight: 700;
+}
+
+/* ----- Faixa de estado (hero) ----- */
+.heroBanner {
+    padding: 2.5rem 1rem;
+    border-radius: 0 0 1.5rem 1.5rem;
+    text-align: center;
+    color: #ffffff;
+    transition: background 0.4s ease;
+    background: linear-gradient(135deg, #6b7280, #4b5563);
+}
+
+.heroBanner.heroInUse {
+    background: linear-gradient(135deg, #c0161c, #7d0d11);
+}
+
+.heroBanner.heroAvailable {
+    background: linear-gradient(135deg, #1a8a43, #0f5c2c);
+}
+
+.heroBanner.heroOffline {
+    background: linear-gradient(135deg, #6b7280, #4b5563);
+}
+
+.heroIcon {
+    font-size: 2.5rem;
+}
+
+.heroState {
+    font-size: 3rem;
+    font-weight: 800;
+    margin: 0.25rem 0;
+    line-height: 1.1;
+}
+
+.heroSubtitle {
+    opacity: 0.92;
+    font-size: 1.05rem;
+}
+
+/* ----- Insígnias de ícone (círculos coloridos como no diseño) ----- */
+.kpiIcon {
+    width: 3rem;
+    height: 3rem;
+    min-width: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    text-align: center;
+    line-height: 3rem;
+}
+
+.kpiIconSm {
+    width: 2.25rem;
+    height: 2.25rem;
+    min-width: 2.25rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    line-height: 2.25rem;
+}
+
+.kpiIconRed {
+    background: #fde8e8;
+}
+
+.kpiIconGreen {
+    background: #e6f4ea;
+}
+
+.kpiIconBlue {
+    background: #e7f0fb;
+}
+
+.kpiIconAmber {
+    background: #fef3e0;
+}
+
+.kpiIconPurple {
+    background: #efe9fb;
+}
+
+/* ----- Cartões ----- */
+.kpiCard {
+    background: #ffffff;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.kpiLabel {
+    letter-spacing: 0.06em;
+    color: #6b7280;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.kpiNumber {
+    font-size: 2.75rem;
+    font-weight: 800;
+    line-height: 1;
+    color: #111827;
+}
+
+.kpiNumberSm {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #111827;
+}
+
+.kpiCaption {
+    color: #6b7280;
+    font-size: 0.85rem;
+}
+
+.kpiUp {
+    color: #16a34a;
+    font-weight: 700;
+}
+
+.kpiDown {
+    color: #dc2626;
+    font-weight: 700;
+}
+
+/* Marca visual para cartões/dados sem sensor real (apenas ilustrativos). */
+.mockTag {
+    color: #9ca3af;
+    font-size: 0.7rem;
+    font-style: italic;
+}
+
+/* ----- Gráfico de barras (Detalhamento) feito em CSS, sem libs extras ----- */
+.barRow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.35rem 0;
+}
+
+.barLabel {
+    width: 5.5rem;
+    font-size: 0.8rem;
+    color: #6b7280;
+    flex: 0 0 auto;
+}
+
+.barTrack {
+    flex: 1 1 auto;
+    background: #eef0f3;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    height: 1.1rem;
+}
+
+.barFill {
+    background: linear-gradient(90deg, #c0161c, #e0474c);
+    height: 100%;
+    border-radius: 0.5rem;
+    min-width: 2px;
+    transition: width 0.4s ease;
+}
+
+.barValue {
+    width: 2.5rem;
+    text-align: right;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #111827;
+    flex: 0 0 auto;
+}

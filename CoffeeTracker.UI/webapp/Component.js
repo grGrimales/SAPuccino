@@ -10,6 +10,9 @@ sap.ui.define([
 
         init: function () {
             UIComponent.prototype.init.apply(this, arguments);
+
+            // Inicializa o roteador para navegar entre o Monitor e o Detalhamento.
+            this.getRouter().initialize();
         }
     });
 });

@@ -1,0 +1,133 @@
+<mvc:View
+    controllerName="sapuccino.controller.Monitor"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout"
+    displayBlock="true"
+    height="100%">
+    <Page id="monitorPage" showHeader="false" class="sapuccinoApp">
+        <content>
+            <!-- Cabeçalho da marca + ação de detalhamento. -->
+            <HBox justifyContent="SpaceBetween" alignItems="Center" class="sapUiSmallMargin">
+                <VBox>
+                    <Text text="☕ SAPUCCINO" class="brandTitle"/>
+                    <Text text="{/connectionText}"/>
+                </VBox>
+                <Button
+                    text="Detalhamento"
+                    icon="sap-icon://line-chart"
+                    type="Transparent"
+                    press="onOpenDetalhamento"/>
+            </HBox>
+
+            <!-- Faixa de estado (cor muda conforme online/em uso/offline). -->
+            <VBox id="heroBanner" alignItems="Center" class="heroBanner">
+                <Text text="{/heroIcon}" class="heroIcon"/>
+                <Text text="{/heroState}" class="heroState"/>
+                <Text text="{/heroSubtitle}" class="heroSubtitle"/>
+            </VBox>
+
+            <!-- Três cartões principais. -->
+            <l:Grid defaultSpan="L4 M4 S12" hSpacing="1" vSpacing="1" class="sapUiSmallMarginBeginEnd sapUiSmallMarginTop">
+                <VBox class="kpiCard">
+                    <HBox alignItems="Center">
+                        <Text text="☕" class="kpiIcon kpiIconRed"/>
+                        <VBox class="sapUiSmallMarginBegin">
+                            <Text text="CAFÉS HOJE" class="kpiLabel"/>
+                            <Text text="{/coffeesToday}" class="kpiNumber"/>
+                            <Text text="Total preparados" class="kpiCaption"/>
+                        </VBox>
+                    </HBox>
+                    <Text text="{/changeText}" class="{/changeClass} sapUiSmallMarginTop"/>
+                </VBox>
+
+                <VBox class="kpiCard">
+                    <HBox alignItems="Center">
+                        <Text text="🕘" class="kpiIcon kpiIconGreen"/>
+                        <VBox class="sapUiSmallMarginBegin">
+                            <Text text="ÚLTIMO CAFÉ" class="kpiLabel"/>
+                            <Text text="{/lastUsedDate}" class="kpiNumberSm"/>
+                            <Text text="{/lastUsedTime}" class="kpiCaption"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <VBox class="kpiCard">
+                    <HBox alignItems="Center">
+                        <Text text="🕐" class="kpiIcon kpiIconBlue"/>
+                        <VBox class="sapUiSmallMarginBegin">
+                            <Text text="AGORA" class="kpiLabel"/>
+                            <Text text="{/clockTime}" class="kpiNumberSm"/>
+                            <Text text="{/clockDate}" class="kpiCaption"/>
+                            <Text text="{/systemActiveText}" class="kpiCaption sapUiTinyMarginTop"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </l:Grid>
+
+            <!-- KPIs secundários (apenas dados reais do backend). -->
+            <l:Grid defaultSpan="L3 M6 S12" hSpacing="1" vSpacing="1" class="sapUiSmallMarginBeginEnd">
+                <VBox class="kpiCard">
+                    <HBox alignItems="Center">
+                        <Text text="☕" class="kpiIconSm kpiIconRed"/>
+                        <VBox class="sapUiSmallMarginBegin">
+                            <Text text="TOTAL DO DIA" class="kpiLabel"/>
+                            <Text text="{/coffeesToday}" class="kpiNumberSm"/>
+                            <Text text="cafés" class="kpiCaption"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+                <VBox class="kpiCard">
+                    <HBox alignItems="Center">
+                        <Text text="📈" class="kpiIconSm kpiIconGreen"/>
+                        <VBox class="sapUiSmallMarginBegin">
+                            <Text text="MÉDIA HORÁRIA" class="kpiLabel"/>
+                            <Text text="{/averagePerHour}" class="kpiNumberSm"/>
+                            <Text text="cafés/hora" class="kpiCaption"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+                <VBox class="kpiCard">
+                    <HBox alignItems="Center">
+                        <Text text="⏱️" class="kpiIconSm kpiIconAmber"/>
+                        <VBox class="sapUiSmallMarginBegin">
+                            <Text text="INTERVALO MÉDIO" class="kpiLabel"/>
+                            <Text text="{/averageIntervalText}" class="kpiNumberSm"/>
+                            <Text text="entre cafés" class="kpiCaption"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+                <VBox class="kpiCard">
+                    <HBox alignItems="Center">
+                        <Text text="🔥" class="kpiIconSm kpiIconPurple"/>
+                        <VBox class="sapUiSmallMarginBegin">
+                            <Text text="HORÁRIO DE PICO" class="kpiLabel"/>
+                            <Text text="{/peakHourText}" class="kpiNumberSm"/>
+                            <Text text="hoje" class="kpiCaption"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </l:Grid>
+
+            <!-- Últimos cafés (somente horários; a máquina não informa o tipo). -->
+            <VBox class="kpiCard sapUiSmallMargin">
+                <Text text="ÚLTIMOS CAFÉS" class="kpiLabel sapUiTinyMarginBottom"/>
+                <List
+                    items="{/recentEvents}"
+                    noDataText="Ainda não há cafés registrados hoje."
+                    showSeparators="Inner">
+                    <StandardListItem
+                        title="{time}"
+                        description="Café detectado"
+                        icon="sap-icon://meal"/>
+                </List>
+            </VBox>
+
+            <Text
+                text="Sistema SAPUCCINO • Monitor de operação em tempo real"
+                textAlign="Center"
+                width="100%"
+                class="kpiCaption sapUiSmallMarginBottom"/>
+        </content>
+    </Page>
+</mvc:View>

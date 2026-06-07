@@ -2,20 +2,8 @@
     controllerName="sapuccino.controller.App"
     xmlns="sap.m"
     xmlns:mvc="sap.ui.core.mvc"
-    displayBlock="true">
-    <App id="appRoot">
-        <pages>
-            <Page id="mainPage" title="SAPuccino ☕">
-                <content>
-                    <VBox class="sapUiLargeMargin">
-                        <Title text="Status da máquina de café" level="H2" class="sapUiMediumMarginBottom"/>
-                        <Text text="Estado: {/machineStateText}" class="sapUiSmallMarginBottom"/>
-                        <Text text="Cafés hoje: {/coffeesToday}" class="sapUiSmallMarginBottom"/>
-                        <Text text="Última utilização: {/lastUsedText}" class="sapUiSmallMarginBottom"/>
-                        <Text text="{/connectionText}" class="sapUiMediumMarginTop"/>
-                    </VBox>
-                </content>
-            </Page>
-        </pages>
-    </App>
+    displayBlock="true"
+    height="100%">
+    <!-- Contêiner de navegação: o roteador injeta o Monitor e o Detalhamento aqui. -->
+    <App id="app"/>
 </mvc:View>

@@ -1,0 +1,122 @@
+<mvc:View
+    controllerName="sapuccino.controller.Detalhamento"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout"
+    displayBlock="true"
+    height="100%">
+    <Page
+        id="detalhamentoPage"
+        title="Detalhamento"
+        showNavButton="true"
+        navButtonPress="onBack"
+        class="sapuccinoApp">
+        <headerContent>
+            <SegmentedButton selectedKey="{/periodDays}" selectionChange="onPeriodChange">
+                <items>
+                    <SegmentedButtonItem text="7 dias" key="7"/>
+                    <SegmentedButtonItem text="30 dias" key="30"/>
+                    <SegmentedButtonItem text="90 dias" key="90"/>
+                </items>
+            </SegmentedButton>
+        </headerContent>
+        <content>
+            <!-- KPIs do período. -->
+            <l:Grid defaultSpan="L3 M6 S12" hSpacing="1" vSpacing="1" class="sapUiSmallMargin">
+                <VBox class="kpiCard">
+                    <Text text="TOTAL NO PERÍODO" class="kpiLabel"/>
+                    <Text text="{/totalCoffees}" class="kpiNumberSm sapUiTinyMarginTop"/>
+                    <Text text="cafés" class="kpiCaption"/>
+                </VBox>
+                <VBox class="kpiCard">
+                    <Text text="MÉDIA POR DIA" class="kpiLabel"/>
+                    <Text text="{/averagePerDay}" class="kpiNumberSm sapUiTinyMarginTop"/>
+                    <Text text="cafés/dia" class="kpiCaption"/>
+                </VBox>
+                <VBox class="kpiCard">
+                    <Text text="DIA MAIS ATIVO" class="kpiLabel"/>
+                    <Text text="{/busiestDayText}" class="kpiNumberSm sapUiTinyMarginTop"/>
+                    <Text text="{/busiestDayCaption}" class="kpiCaption"/>
+                </VBox>
+                <VBox class="kpiCard">
+                    <Text text="HORÁRIO DE PICO" class="kpiLabel"/>
+                    <Text text="{/peakHourText}" class="kpiNumberSm sapUiTinyMarginTop"/>
+                    <Text text="no período" class="kpiCaption"/>
+                </VBox>
+            </l:Grid>
+
+            <!-- Gráfico: cafés por dia. -->
+            <VBox class="kpiCard sapUiSmallMargin">
+                <Text text="CAFÉS POR DIA" class="kpiLabel sapUiTinyMarginBottom"/>
+                <List
+                    items="{/daily}"
+                    noDataText="Sem dados no período."
+                    showSeparators="None">
+                    <CustomListItem>
+                        <HBox alignItems="Center" class="sapUiTinyMarginTopBottom">
+                            <Text text="{label}" width="5rem" class="barLabel"/>
+                            <ProgressIndicator
+                                percentValue="{percent}"
+                                displayValue="{value}"
+                                showValue="true"
+                                state="Information"
+                                class="sapUiSmallMarginBegin"
+                                width="100%"/>
+                        </HBox>
+                    </CustomListItem>
+                </List>
+            </VBox>
+
+            <!-- Gráfico: distribuição por hora. -->
+            <VBox class="kpiCard sapUiSmallMargin">
+                <Text text="DISTRIBUIÇÃO POR HORA" class="kpiLabel sapUiTinyMarginBottom"/>
+                <List
+                    items="{/hourly}"
+                    noDataText="Sem dados no período."
+                    showSeparators="None">
+                    <CustomListItem>
+                        <HBox alignItems="Center" class="sapUiTinyMarginTopBottom">
+                            <Text text="{label}" width="3.5rem" class="barLabel"/>
+                            <ProgressIndicator
+                                percentValue="{percent}"
+                                displayValue="{value}"
+                                showValue="true"
+                                state="Success"
+                                class="sapUiSmallMarginBegin"
+                                width="100%"/>
+                        </HBox>
+                    </CustomListItem>
+                </List>
+            </VBox>
+
+            <!-- Disponibilidade / uptime. -->
+            <VBox class="kpiCard sapUiSmallMargin">
+                <Text text="DISPONIBILIDADE" class="kpiLabel sapUiTinyMarginBottom"/>
+                <l:Grid defaultSpan="L3 M6 S12" hSpacing="1" vSpacing="1">
+                    <VBox>
+                        <Text text="{/uptimePercent}%" class="kpiNumberSm"/>
+                        <Text text="uptime no período" class="kpiCaption"/>
+                    </VBox>
+                    <VBox>
+                        <Text text="{/currentStateText}" class="kpiNumberSm"/>
+                        <Text text="estado atual" class="kpiCaption"/>
+                    </VBox>
+                    <VBox>
+                        <Text text="{/outages}" class="kpiNumberSm"/>
+                        <Text text="quedas" class="kpiCaption"/>
+                    </VBox>
+                    <VBox>
+                        <Text text="{/longestOutageText}" class="kpiNumberSm"/>
+                        <Text text="maior queda" class="kpiCaption"/>
+                    </VBox>
+                </l:Grid>
+            </VBox>
+
+            <Text
+                text="Sistema SAPUCCINO • Relatórios de consumo e disponibilidade"
+                textAlign="Center"
+                width="100%"
+                class="kpiCaption sapUiSmallMarginBottom"/>
+        </content>
+    </Page>
+</mvc:View>

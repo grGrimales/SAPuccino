@@ -27,9 +27,48 @@
         "dependencies": {
             "minUI5Version": "1.120.0",
             "libs": {
-                "sap.m": {}
+                "sap.m": {},
+                "sap.ui.layout": {}
             }
         },
-        "models": {}
+        "resources": {
+            "css": [
+                { "uri": "css/style.css" }
+            ]
+        },
+        "models": {},
+        "routing": {
+            "config": {
+                "routerClass": "sap.m.routing.Router",
+                "type": "View",
+                "viewType": "XML",
+                "path": "sapuccino.view",
+                "controlId": "app",
+                "controlAggregation": "pages",
+                "async": true
+            },
+            "routes": [
+                {
+                    "name": "monitor",
+                    "pattern": "",
+                    "target": "monitor"
+                },
+                {
+                    "name": "detalhamento",
+                    "pattern": "detalhamento",
+                    "target": "detalhamento"
+                }
+            ],
+            "targets": {
+                "monitor": {
+                    "id": "monitor",
+                    "name": "Monitor"
+                },
+                "detalhamento": {
+                    "id": "detalhamento",
+                    "name": "Detalhamento"
+                }
+            }
+        }
     }
 }
