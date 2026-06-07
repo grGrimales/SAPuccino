@@ -5,21 +5,23 @@
     background-color: #f3f4f6;
 }
 
-/* Cabeçalho da marca. */
+/* Cabeçalho da marca (dentro da faixa colorida, texto branco). */
 .brandTitle {
     font-weight: 800;
     letter-spacing: 0.18em;
     font-size: 1.25rem;
+    color: #ffffff;
 }
 
-.liveDot {
-    color: #22c55e;
-    font-weight: 700;
+/* Botão "Detalhamento" sobre a faixa colorida. */
+.heroBtn .sapMBtnInner {
+    background-color: rgba(255, 255, 255, 0.18) !important;
+    border: 1px solid rgba(255, 255, 255, 0.7) !important;
 }
 
-.liveDotOffline {
-    color: #ef4444;
-    font-weight: 700;
+.heroBtn .sapMBtnContent,
+.heroBtn .sapMBtnIcon {
+    color: #ffffff !important;
 }
 
 /* ----- Faixa de estado (hero) ----- */
@@ -102,8 +104,8 @@
     background: #fef3e0;
 }
 
-.kpiIconPurple {
-    background: #efe9fb;
+.kpiIconOrange {
+    background: #fdecdf;
 }
 
 /* ----- Cartões ----- */

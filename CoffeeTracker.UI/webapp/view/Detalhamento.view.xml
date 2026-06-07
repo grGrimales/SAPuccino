@@ -55,7 +55,7 @@
                 </VBox>
                 <VBox class="kpiCard">
                     <HBox alignItems="Center">
-                        <Text text="🔥" class="kpiIconSm kpiIconPurple"/>
+                        <Text text="🔥" class="kpiIconSm kpiIconOrange"/>
                         <VBox class="sapUiSmallMarginBegin">
                             <Text text="HORÁRIO DE PICO" class="kpiLabel"/>
                             <Text text="{/peakHourText}" class="kpiNumberSm"/>

@@ -7,24 +7,26 @@
     height="100%">
     <Page id="monitorPage" showHeader="false" class="sapuccinoApp">
         <content>
-            <!-- Cabeçalho da marca + ação de detalhamento. -->
-            <HBox justifyContent="SpaceBetween" alignItems="Center" class="sapUiSmallMargin">
-                <VBox>
-                    <Text text="☕ SAPUCCINO" class="brandTitle"/>
-                    <Text text="{/connectionText}"/>
+            <!-- Faixa de estado (cor muda conforme online/em uso/offline);
+                 inclui o cabeçalho da marca, como na imagem de referência. -->
+            <VBox id="heroBanner" class="heroBanner">
+                <HBox justifyContent="SpaceBetween" alignItems="Center" width="100%">
+                    <VBox>
+                        <Text text="☕ SAPUCCINO" class="brandTitle"/>
+                        <Text text="{/connectionText}"/>
+                    </VBox>
+                    <Button
+                        text="Detalhamento"
+                        icon="sap-icon://line-chart"
+                        type="Transparent"
+                        press="onOpenDetalhamento"
+                        class="heroBtn"/>
+                </HBox>
+                <VBox alignItems="Center" width="100%" class="sapUiMediumMarginTop">
+                    <Text text="{/heroIcon}" class="heroIcon"/>
+                    <Text text="{/heroState}" class="heroState"/>
+                    <Text text="{/heroSubtitle}" class="heroSubtitle"/>
                 </VBox>
-                <Button
-                    text="Detalhamento"
-                    icon="sap-icon://line-chart"
-                    type="Transparent"
-                    press="onOpenDetalhamento"/>
-            </HBox>
-
-            <!-- Faixa de estado (cor muda conforme online/em uso/offline). -->
-            <VBox id="heroBanner" alignItems="Center" class="heroBanner">
-                <Text text="{/heroIcon}" class="heroIcon"/>
-                <Text text="{/heroState}" class="heroState"/>
-                <Text text="{/heroSubtitle}" class="heroSubtitle"/>
             </VBox>
 
             <!-- Três cartões principais. -->
@@ -99,7 +101,7 @@
                 </VBox>
                 <VBox class="kpiCard">
                     <HBox alignItems="Center">
-                        <Text text="🔥" class="kpiIconSm kpiIconPurple"/>
+                        <Text text="🔥" class="kpiIconSm kpiIconOrange"/>
                         <VBox class="sapUiSmallMarginBegin">
                             <Text text="HORÁRIO DE PICO" class="kpiLabel"/>
                             <Text text="{/peakHourText}" class="kpiNumberSm"/>
