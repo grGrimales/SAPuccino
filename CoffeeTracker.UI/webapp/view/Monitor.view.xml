@@ -13,7 +13,7 @@
                 <HBox justifyContent="SpaceBetween" alignItems="Center" width="100%">
                     <VBox>
                         <Text text="☕ SAPUCCINO" class="brandTitle"/>
-                        <Text text="{/connectionText}"/>
+                        <Text text="{/connectionText}" class="heroBrandSub"/>
                     </VBox>
                     <Button
                         text="Detalhamento"

@@ -13,6 +13,12 @@
     color: #ffffff;
 }
 
+.heroBrandSub {
+    color: #ffffff !important;
+    opacity: 0.9;
+    font-size: 0.85rem;
+}
+
 /* Botão "Detalhamento" sobre a faixa colorida. */
 .heroBtn .sapMBtnInner {
     background-color: rgba(255, 255, 255, 0.18) !important;
@@ -65,11 +71,13 @@
     font-weight: 800;
     margin: 0;
     line-height: 1.1;
+    color: #ffffff !important;
 }
 
 .heroSubtitle {
     opacity: 0.92;
     font-size: 1.05rem;
+    color: #ffffff !important;
 }
 
 /* ----- Insígnias de ícone (círculos coloridos como no diseño) ----- */
