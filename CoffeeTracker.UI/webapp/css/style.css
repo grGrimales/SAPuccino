@@ -47,13 +47,23 @@
 }
 
 .heroIcon {
-    font-size: 2.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.85);
+    font-size: 2.1rem;
+    line-height: 1;
+    color: #ffffff;
+    margin-bottom: 0.4rem;
 }
 
 .heroState {
     font-size: 3rem;
     font-weight: 800;
-    margin: 0.25rem 0;
+    margin: 0;
     line-height: 1.1;
 }
 

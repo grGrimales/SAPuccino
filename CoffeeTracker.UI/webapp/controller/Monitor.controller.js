@@ -106,7 +106,7 @@ sap.ui.define([
                 this._model.setProperty("/systemActiveText", "🟢 Sistema ativo");
             } else {
                 heroClass = "heroAvailable";
-                this._model.setProperty("/heroIcon", "✔️");
+                this._model.setProperty("/heroIcon", "✓");
                 this._model.setProperty("/heroState", "DISPONÍVEL");
                 this._model.setProperty("/heroSubtitle", "Máquina pronta para uso");
                 this._model.setProperty("/systemActiveText", "🟢 Sistema ativo");

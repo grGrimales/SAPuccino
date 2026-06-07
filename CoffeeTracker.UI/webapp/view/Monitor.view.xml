@@ -22,7 +22,7 @@
                         press="onOpenDetalhamento"
                         class="heroBtn"/>
                 </HBox>
-                <VBox alignItems="Center" width="100%" class="sapUiMediumMarginTop">
+                <VBox alignItems="Center" width="100%" class="sapUiSmallMarginTop">
                     <Text text="{/heroIcon}" class="heroIcon"/>
                     <Text text="{/heroState}" class="heroState"/>
                     <Text text="{/heroSubtitle}" class="heroSubtitle"/>
