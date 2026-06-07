@@ -24,30 +24,53 @@
             <!-- KPIs do período. -->
             <l:Grid defaultSpan="L3 M6 S12" hSpacing="1" vSpacing="1" class="sapUiSmallMargin">
                 <VBox class="kpiCard">
-                    <Text text="TOTAL NO PERÍODO" class="kpiLabel"/>
-                    <Text text="{/totalCoffees}" class="kpiNumberSm sapUiTinyMarginTop"/>
-                    <Text text="cafés" class="kpiCaption"/>
+                    <HBox alignItems="Center">
+                        <Text text="☕" class="kpiIconSm kpiIconRed"/>
+                        <VBox class="sapUiSmallMarginBegin">
+                            <Text text="TOTAL NO PERÍODO" class="kpiLabel"/>
+                            <Text text="{/totalCoffees}" class="kpiNumberSm"/>
+                            <Text text="cafés" class="kpiCaption"/>
+                        </VBox>
+                    </HBox>
                 </VBox>
                 <VBox class="kpiCard">
-                    <Text text="MÉDIA POR DIA" class="kpiLabel"/>
-                    <Text text="{/averagePerDay}" class="kpiNumberSm sapUiTinyMarginTop"/>
-                    <Text text="cafés/dia" class="kpiCaption"/>
+                    <HBox alignItems="Center">
+                        <Text text="📈" class="kpiIconSm kpiIconGreen"/>
+                        <VBox class="sapUiSmallMarginBegin">
+                            <Text text="MÉDIA POR DIA" class="kpiLabel"/>
+                            <Text text="{/averagePerDay}" class="kpiNumberSm"/>
+                            <Text text="cafés/dia" class="kpiCaption"/>
+                        </VBox>
+                    </HBox>
                 </VBox>
                 <VBox class="kpiCard">
-                    <Text text="DIA MAIS ATIVO" class="kpiLabel"/>
-                    <Text text="{/busiestDayText}" class="kpiNumberSm sapUiTinyMarginTop"/>
-                    <Text text="{/busiestDayCaption}" class="kpiCaption"/>
+                    <HBox alignItems="Center">
+                        <Text text="🏆" class="kpiIconSm kpiIconAmber"/>
+                        <VBox class="sapUiSmallMarginBegin">
+                            <Text text="DIA MAIS ATIVO" class="kpiLabel"/>
+                            <Text text="{/busiestDayText}" class="kpiNumberSm"/>
+                            <Text text="{/busiestDayCaption}" class="kpiCaption"/>
+                        </VBox>
+                    </HBox>
                 </VBox>
                 <VBox class="kpiCard">
-                    <Text text="HORÁRIO DE PICO" class="kpiLabel"/>
-                    <Text text="{/peakHourText}" class="kpiNumberSm sapUiTinyMarginTop"/>
-                    <Text text="no período" class="kpiCaption"/>
+                    <HBox alignItems="Center">
+                        <Text text="🔥" class="kpiIconSm kpiIconPurple"/>
+                        <VBox class="sapUiSmallMarginBegin">
+                            <Text text="HORÁRIO DE PICO" class="kpiLabel"/>
+                            <Text text="{/peakHourText}" class="kpiNumberSm"/>
+                            <Text text="no período" class="kpiCaption"/>
+                        </VBox>
+                    </HBox>
                 </VBox>
             </l:Grid>
 
             <!-- Gráfico: cafés por dia. -->
             <VBox class="kpiCard sapUiSmallMargin">
-                <Text text="CAFÉS POR DIA" class="kpiLabel sapUiTinyMarginBottom"/>
+                <HBox alignItems="Center" class="sapUiTinyMarginBottom">
+                    <Text text="📊" class="kpiIconSm kpiIconBlue"/>
+                    <Text text="CAFÉS POR DIA" class="sectionTitle sapUiSmallMarginBegin"/>
+                </HBox>
                 <List
                     items="{/daily}"
                     noDataText="Sem dados no período."
@@ -69,7 +92,10 @@
 
             <!-- Gráfico: distribuição por hora. -->
             <VBox class="kpiCard sapUiSmallMargin">
-                <Text text="DISTRIBUIÇÃO POR HORA" class="kpiLabel sapUiTinyMarginBottom"/>
+                <HBox alignItems="Center" class="sapUiTinyMarginBottom">
+                    <Text text="🕐" class="kpiIconSm kpiIconGreen"/>
+                    <Text text="DISTRIBUIÇÃO POR HORA" class="sectionTitle sapUiSmallMarginBegin"/>
+                </HBox>
                 <List
                     items="{/hourly}"
                     noDataText="Sem dados no período."
@@ -91,10 +117,13 @@
 
             <!-- Disponibilidade / uptime. -->
             <VBox class="kpiCard sapUiSmallMargin">
-                <Text text="DISPONIBILIDADE" class="kpiLabel sapUiTinyMarginBottom"/>
+                <HBox alignItems="Center" class="sapUiTinyMarginBottom">
+                    <Text text="🟢" class="kpiIconSm kpiIconGreen"/>
+                    <Text text="DISPONIBILIDADE" class="sectionTitle sapUiSmallMarginBegin"/>
+                </HBox>
                 <l:Grid defaultSpan="L3 M6 S12" hSpacing="1" vSpacing="1">
                     <VBox>
-                        <Text text="{/uptimePercent}%" class="kpiNumberSm"/>
+                        <Text text="{/uptimePercent}%" class="kpiNumberGreen"/>
                         <Text text="uptime no período" class="kpiCaption"/>
                     </VBox>
                     <VBox>

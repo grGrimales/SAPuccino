@@ -37,7 +37,7 @@
 }
 
 .heroBanner.heroAvailable {
-    background: linear-gradient(135deg, #1a8a43, #0f5c2c);
+    background: linear-gradient(135deg, #1aa64f, #0c8a3c);
 }
 
 .heroBanner.heroOffline {
@@ -150,6 +150,19 @@
 .kpiDown {
     color: #dc2626;
     font-weight: 700;
+}
+
+.kpiNumberGreen {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #0c8a3c;
+}
+
+/* Título de seção com ícone (Detalhamento). */
+.sectionTitle {
+    font-weight: 700;
+    color: #374151;
+    font-size: 0.95rem;
 }
 
 /* Marca visual para cartões/dados sem sensor real (apenas ilustrativos). */
