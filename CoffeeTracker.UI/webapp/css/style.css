@@ -187,7 +187,7 @@
 }
 
 .kpiUp {
-    color: #16a34a;
+    color: #15803d;
     font-weight: 700;
 }
 
@@ -220,7 +220,7 @@
 .trendPill,
 .statusPill,
 .activePill {
-    background: #f1f6f2;
+    background: #e8f6ee;
     border-radius: 0.75rem;
     padding: 0.55rem 0.9rem;
     width: 100%;
