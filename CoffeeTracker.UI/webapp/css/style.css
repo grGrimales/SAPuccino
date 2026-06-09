@@ -45,7 +45,7 @@
 .heroBanner::after {
     content: "";
     position: absolute;
-    top: 2rem;
+    bottom: -1.5rem;
     right: -1.25rem;
     width: 9.5rem;
     height: 9.5rem;
