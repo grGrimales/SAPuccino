@@ -117,20 +117,18 @@
                     </VBox>
                     <Text text="DISTRIBUIÇÃO POR HORA" class="sectionTitle sapUiSmallMarginBegin"/>
                 </HBox>
-                <List
-                    items="{/hourly}"
-                    noDataText="Sem dados no período."
-                    showSeparators="None">
-                    <CustomListItem>
-                        <HBox class="barRow" alignItems="Center">
-                            <Text text="{label}" class="barLabelSm"/>
-                            <HBox class="barTrack">
-                                <HBox class="barFill" width="{width}"/>
-                            </HBox>
-                            <Text text="{value}" class="barValue"/>
-                        </HBox>
-                    </CustomListItem>
-                </List>
+                <Text text="Quantos cafés foram preparados em cada hora do dia." class="kpiCaption"/>
+                <ScrollContainer horizontal="true" vertical="false" width="100%" class="sapUiTinyMarginTop">
+                    <HBox class="colChart" items="{/hourly}">
+                        <VBox class="colItem" alignItems="Center" justifyContent="End">
+                            <Text text="{value}" class="colValue"/>
+                            <VBox class="colBarArea" justifyContent="End">
+                                <VBox class="colBar" height="{width}"/>
+                            </VBox>
+                            <Text text="{label}" class="colLabel"/>
+                        </VBox>
+                    </HBox>
+                </ScrollContainer>
             </VBox>
 
             <!-- Disponibilidade / uptime. -->
