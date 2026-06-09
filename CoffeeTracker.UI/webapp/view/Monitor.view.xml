@@ -125,7 +125,7 @@
                         <VBox>
                             <Text text="HORÁRIO DE PICO" class="kpiLabel"/>
                             <Text text="{/peakHourText}" class="kpiNumberSm"/>
-                            <Text text="hoje" class="kpiCaption"/>
+                            <Text text="{/peakHourCaption}" class="kpiCaption"/>
                         </VBox>
                     </HBox>
                     <HBox class="kpiCol" alignItems="Center" justifyContent="Center">

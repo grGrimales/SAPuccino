@@ -24,6 +24,7 @@ sap.ui.define([
                 averagePerHour: 0,
                 averageIntervalText: "—",
                 peakHourText: "—",
+                peakHourCaption: "hoje",
                 sinceLastText: "—",
                 recentEvents: []
             });
@@ -159,7 +160,9 @@ sap.ui.define([
             this._model.setProperty("/coffeesToday", dashboard.coffeesToday);
             this._model.setProperty("/averagePerHour", this._round(dashboard.averagePerHour));
             this._model.setProperty("/averageIntervalText", this._formatInterval(dashboard.averageIntervalSeconds));
-            this._model.setProperty("/peakHourText", this._formatPeakHour(dashboard.peakHourToday));
+            const peak = dashboard.peakHourToday;
+            this._model.setProperty("/peakHourText", peak ? peak.hour + "h" : "—");
+            this._model.setProperty("/peakHourCaption", peak ? peak.count + (peak.count === 1 ? " café" : " cafés") : "hoje");
             this._model.setProperty("/sinceLastText", this._formatSince(dashboard.secondsSinceLastCoffee));
 
             // Variação vs ontem (seta para cima/baixo e cor).
