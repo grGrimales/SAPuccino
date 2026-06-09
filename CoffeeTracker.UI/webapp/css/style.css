@@ -223,7 +223,7 @@
 
 /* Coluna de KPI dentro da faixa única, com divisória vertical. */
 .kpiCol {
-    flex: 1 1 0;
+    flex: 1 1 9rem;
     min-width: 0;
     padding: 0.5rem 0.75rem;
     box-sizing: border-box;
@@ -282,8 +282,13 @@
 }
 
 /* ----- Linha de 3 cartões do mesmo tamanho (largura e altura) ----- */
+/* Fila responsiva: espaçamento por gap, cartões elásticos que quebram. */
+.cardsRow {
+    gap: 0.85rem;
+}
+
 .cardThird {
-    flex: 0 0 32.5%;
+    flex: 1 1 15rem;
     min-width: 0;
     box-sizing: border-box;
 }
