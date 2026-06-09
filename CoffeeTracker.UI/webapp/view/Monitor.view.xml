@@ -93,49 +93,43 @@
                 </VBox>
             </HBox>
 
-            <!-- KPIs secundários (apenas dados reais do backend). -->
-            <l:Grid defaultSpan="L3 M6 S12" hSpacing="1" vSpacing="1" class="sapUiSmallMarginBeginEnd">
-                <VBox class="kpiCard">
-                    <HBox alignItems="Center">
-                        <Text text="☕" class="kpiIconSm kpiIconRed"/>
-                        <VBox class="sapUiSmallMarginBegin">
+            <!-- KPIs do dia numa faixa única, separados por linhas (como o diseño). -->
+            <VBox class="kpiCard sapUiSmallMarginBeginEnd">
+                <HBox alignItems="Stretch">
+                    <HBox class="kpiCol" alignItems="Center" justifyContent="Center">
+                        <Image src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2316a34a%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M4%208h12v5a4%204%200%200%201-4%204H8a4%204%200%200%201-4-4z%22%2F%3E%3Cpath%20d%3D%22M16%209h2.5a2.5%202.5%200%200%201%200%205H16%22%2F%3E%3Cpath%20d%3D%22M7%202.5v2M10%202v2.5M13%202.5v2%22%2F%3E%3C%2Fsvg%3E" width="1.5rem" height="1.5rem" class="sapUiSmallMarginEnd"/>
+                        <VBox>
                             <Text text="TOTAL DO DIA" class="kpiLabel"/>
                             <Text text="{/coffeesToday}" class="kpiNumberSm"/>
                             <Text text="cafés" class="kpiCaption"/>
                         </VBox>
                     </HBox>
-                </VBox>
-                <VBox class="kpiCard">
-                    <HBox alignItems="Center">
-                        <Text text="📈" class="kpiIconSm kpiIconGreen"/>
-                        <VBox class="sapUiSmallMarginBegin">
+                    <HBox class="kpiCol" alignItems="Center" justifyContent="Center">
+                        <Image src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2316a34a%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M3%2017L9%2011L13%2014L21%206%22%2F%3E%3Cpath%20d%3D%22M16%206h5v5%22%2F%3E%3C%2Fsvg%3E" width="1.5rem" height="1.5rem" class="sapUiSmallMarginEnd"/>
+                        <VBox>
                             <Text text="MÉDIA HORÁRIA" class="kpiLabel"/>
                             <Text text="{/averagePerHour}" class="kpiNumberSm"/>
                             <Text text="cafés/hora" class="kpiCaption"/>
                         </VBox>
                     </HBox>
-                </VBox>
-                <VBox class="kpiCard">
-                    <HBox alignItems="Center">
-                        <Text text="⏱️" class="kpiIconSm kpiIconAmber"/>
-                        <VBox class="sapUiSmallMarginBegin">
+                    <HBox class="kpiCol" alignItems="Center" justifyContent="Center">
+                        <Image src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23f59e0b%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%229%22%2F%3E%3Cpath%20d%3D%22M12%207v5l3%202%22%2F%3E%3C%2Fsvg%3E" width="1.5rem" height="1.5rem" class="sapUiSmallMarginEnd"/>
+                        <VBox>
                             <Text text="INTERVALO MÉDIO" class="kpiLabel"/>
                             <Text text="{/averageIntervalText}" class="kpiNumberSm"/>
                             <Text text="entre cafés" class="kpiCaption"/>
                         </VBox>
                     </HBox>
-                </VBox>
-                <VBox class="kpiCard">
-                    <HBox alignItems="Center">
-                        <Text text="🔥" class="kpiIconSm kpiIconOrange"/>
-                        <VBox class="sapUiSmallMarginBegin">
+                    <HBox class="kpiCol" alignItems="Center" justifyContent="Center">
+                        <Image src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23f97316%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M3%2013h3l3-7%204%2013%203-9%202%203h3%22%2F%3E%3C%2Fsvg%3E" width="1.5rem" height="1.5rem" class="sapUiSmallMarginEnd"/>
+                        <VBox>
                             <Text text="HORÁRIO DE PICO" class="kpiLabel"/>
                             <Text text="{/peakHourText}" class="kpiNumberSm"/>
                             <Text text="hoje" class="kpiCaption"/>
                         </VBox>
                     </HBox>
-                </VBox>
-            </l:Grid>
+                </HBox>
+            </VBox>
 
             <!-- Últimos cafés (somente horários; a máquina não informa o tipo). -->
             <VBox class="kpiCard sapUiSmallMargin">

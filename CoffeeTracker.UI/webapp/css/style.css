@@ -221,6 +221,18 @@
     font-weight: 600;
 }
 
+/* Coluna de KPI dentro da faixa única, com divisória vertical. */
+.kpiCol {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 0.5rem 0.75rem;
+    box-sizing: border-box;
+}
+
+.kpiCol + .kpiCol {
+    border-left: 1px solid #eef0f2;
+}
+
 .kpiNumber {
     font-size: 2.75rem;
     font-weight: 800;
