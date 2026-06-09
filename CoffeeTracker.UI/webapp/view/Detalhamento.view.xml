@@ -8,8 +8,8 @@
     height="100%">
     <Page id="detalhamentoPage" showHeader="false" class="sapuccinoApp">
         <content>
-            <!-- Cabeçalho verde, no mesmo estilo do Monitor. -->
-            <VBox class="detHeader">
+            <!-- Cabeçalho: cor e badge refletem o estado da máquina (verde/vermelho/cinza). -->
+            <VBox id="detHeaderBox" class="detHeader">
                 <HBox justifyContent="SpaceBetween" alignItems="Center" width="100%">
                     <HBox alignItems="Center">
                         <Button icon="sap-icon://nav-back" type="Transparent" press="onBack" class="heroBtn sapUiTinyMarginEnd"/>
@@ -20,6 +20,7 @@
                             class="sapUiTinyMarginEnd"/>
                         <Text text="SAPUCCINO" class="brandTitle"/>
                     </HBox>
+                    <Text text="{/detStateText}" class="detStateBadge"/>
                 </HBox>
                 <VBox alignItems="Center" width="100%" class="sapUiSmallMarginTop">
                     <Text text="DETALHAMENTO" class="detTitle"/>

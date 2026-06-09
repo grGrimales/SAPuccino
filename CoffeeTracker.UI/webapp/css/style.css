@@ -153,11 +153,30 @@
     color: #ffffff !important;
 }
 
-/* ----- Cabeçalho do Detalhamento (mesmo estilo verde do Monitor) ----- */
+/* ----- Cabeçalho do Detalhamento (cor reflete o estado da máquina) ----- */
 .detHeader {
     padding: 1.25rem 1.5rem 1.75rem;
     color: #ffffff;
     background: linear-gradient(135deg, #1aa64f, #0c8a3c);
+    transition: background 0.4s ease;
+}
+
+.detHeader.detInUse {
+    background: linear-gradient(135deg, #c0161c, #7d0d11);
+}
+
+.detHeader.detOffline {
+    background: linear-gradient(135deg, #6b7280, #4b5563);
+}
+
+.detStateBadge {
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff !important;
+    border-radius: 1rem;
+    padding: 0.3rem 0.9rem;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
 }
 
 .detTitle {

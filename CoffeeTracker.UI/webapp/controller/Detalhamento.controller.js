@@ -27,7 +27,8 @@ sap.ui.define([
                 uptimeWidth: "0%",
                 currentStateText: "—",
                 outages: 0,
-                longestOutageText: "—"
+                longestOutageText: "—",
+                detStateText: "—"
             });
             this.getView().setModel(this._model);
 
@@ -35,6 +36,40 @@ sap.ui.define([
             this.getOwnerComponent().getRouter()
                 .getRoute("detalhamento")
                 .attachPatternMatched(this._onRouteMatched, this);
+
+            // Estado da máquina em tempo real (para indicar EM USO/DISPONÍVEL/OFFLINE no cabeçalho).
+            CoffeeService.getStatus().then(this._applyState.bind(this)).catch(function () {});
+            this._connection = CoffeeService.connectRealtime({ onStatus: this._applyState.bind(this) });
+        },
+
+        onExit: function () {
+            if (this._connection && this._connection.stop) {
+                this._connection.stop();
+            }
+        },
+
+        // Reflete o estado atual da máquina no cabeçalho (cor + texto).
+        _applyState: function (status) {
+            if (!status) {
+                return;
+            }
+            let stateClass = "";
+            let text = "DISPONÍVEL";
+            if (status.machineState !== "online") {
+                stateClass = "detOffline";
+                text = "OFFLINE";
+            } else if (status.inUse) {
+                stateClass = "detInUse";
+                text = "EM USO";
+            }
+            const header = this.byId("detHeaderBox");
+            if (header) {
+                header.removeStyleClass("detInUse").removeStyleClass("detOffline");
+                if (stateClass) {
+                    header.addStyleClass(stateClass);
+                }
+            }
+            this._model.setProperty("/detStateText", text);
         },
 
         _onRouteMatched: function () {
