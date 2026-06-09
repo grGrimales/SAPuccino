@@ -153,6 +153,26 @@
     color: #ffffff !important;
 }
 
+/* ----- Cabeçalho do Detalhamento (mesmo estilo verde do Monitor) ----- */
+.detHeader {
+    padding: 1.25rem 1.5rem 1.75rem;
+    color: #ffffff;
+    background: linear-gradient(135deg, #1aa64f, #0c8a3c);
+}
+
+.detTitle {
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: #ffffff !important;
+    margin-top: 0.4rem;
+}
+
+.detSubtitle {
+    color: #ffffff !important;
+    opacity: 0.9;
+    font-size: 0.95rem;
+}
+
 /* ----- Insígnias de ícone (círculos coloridos como no diseño) ----- */
 .kpiIcon {
     width: 3rem;

@@ -5,22 +5,34 @@
     xmlns:l="sap.ui.layout"
     displayBlock="true"
     height="100%">
-    <Page
-        id="detalhamentoPage"
-        title="Detalhamento"
-        showNavButton="true"
-        navButtonPress="onBack"
-        class="sapuccinoApp">
-        <headerContent>
-            <SegmentedButton selectedKey="{/periodDays}" selectionChange="onPeriodChange">
-                <items>
-                    <SegmentedButtonItem text="7 dias" key="7"/>
-                    <SegmentedButtonItem text="30 dias" key="30"/>
-                    <SegmentedButtonItem text="90 dias" key="90"/>
-                </items>
-            </SegmentedButton>
-        </headerContent>
+    <Page id="detalhamentoPage" showHeader="false" class="sapuccinoApp">
         <content>
+            <!-- Cabeçalho verde, no mesmo estilo do Monitor. -->
+            <VBox class="detHeader">
+                <HBox justifyContent="SpaceBetween" alignItems="Center" width="100%">
+                    <HBox alignItems="Center">
+                        <Button icon="sap-icon://nav-back" type="Transparent" press="onBack" class="heroBtn sapUiTinyMarginEnd"/>
+                        <Image
+                            src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22white%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M4%208h12v5a4%204%200%200%201-4%204H8a4%204%200%200%201-4-4z%22%2F%3E%3Cpath%20d%3D%22M16%209h2.5a2.5%202.5%200%200%201%200%205H16%22%2F%3E%3Cpath%20d%3D%22M7%202.5v2M10%202v2.5M13%202.5v2%22%2F%3E%3C%2Fsvg%3E"
+                            width="1.6rem"
+                            height="1.6rem"
+                            class="sapUiTinyMarginEnd"/>
+                        <Text text="SAPUCCINO" class="brandTitle"/>
+                    </HBox>
+                    <SegmentedButton selectedKey="{/periodDays}" selectionChange="onPeriodChange">
+                        <items>
+                            <SegmentedButtonItem text="7 dias" key="7"/>
+                            <SegmentedButtonItem text="30 dias" key="30"/>
+                            <SegmentedButtonItem text="90 dias" key="90"/>
+                        </items>
+                    </SegmentedButton>
+                </HBox>
+                <VBox alignItems="Center" width="100%" class="sapUiSmallMarginTop">
+                    <Text text="DETALHAMENTO" class="detTitle"/>
+                    <Text text="Relatórios de consumo e disponibilidade" class="detSubtitle"/>
+                </VBox>
+            </VBox>
+
             <!-- KPIs do período. -->
             <l:Grid defaultSpan="L3 M6 S12" hSpacing="1" vSpacing="1" class="sapUiSmallMargin">
                 <VBox class="kpiCard">
