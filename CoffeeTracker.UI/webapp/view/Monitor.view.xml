@@ -43,7 +43,7 @@
                 <VBox class="kpiCard cardThird">
                     <VBox class="cardTopRel">
                         <VBox class="kpiIcon accentSoftBg cardIconAbs" justifyContent="Center" alignItems="Center">
-                            <core:HTML content="&lt;span class=&quot;maskIcon maskCup&quot;&gt;&lt;/span&gt;"/>
+                            <VBox class="maskIcon maskCup"/>
                         </VBox>
                         <VBox alignItems="Center" width="100%">
                             <Text text="CAFÉS HOJE" class="kpiLabel"/>
@@ -54,7 +54,7 @@
                     <VBox class="cardSpacer"/>
                     <HBox class="trendPill sapUiSmallMarginTop" justifyContent="SpaceBetween" alignItems="Center">
                         <Text text="{/changeText}" class="accentText"/>
-                        <core:HTML content="&lt;span class=&quot;maskIcon maskTrend&quot;&gt;&lt;/span&gt;"/>
+                        <VBox class="maskIcon maskTrend"/>
                     </HBox>
                 </VBox>
 

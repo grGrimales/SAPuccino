@@ -20,7 +20,7 @@
 
 /* Ícone recolorível pela variável de acento (usa o SVG como máscara). */
 .maskIcon {
-    display: inline-block;
+    display: block;
     background-color: var(--accent);
     -webkit-mask-repeat: no-repeat;
     mask-repeat: no-repeat;
