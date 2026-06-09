@@ -3,6 +3,7 @@
     xmlns="sap.m"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core"
     displayBlock="true"
     height="100%">
     <Page id="monitorPage" showHeader="false" class="sapuccinoApp">
@@ -38,38 +39,54 @@
 
             <!-- Três cartões principais. -->
             <l:Grid defaultSpan="L4 M4 S12" hSpacing="1" vSpacing="1" class="sapUiSmallMarginBeginEnd sapUiSmallMarginTop">
+                <!-- Cafés hoje -->
                 <VBox class="kpiCard">
-                    <HBox alignItems="Center">
-                        <Text text="☕" class="kpiIcon kpiIconRed"/>
-                        <VBox class="sapUiSmallMarginBegin">
+                    <HBox alignItems="Center" justifyContent="Center">
+                        <VBox class="kpiIcon kpiIconGreen">
+                            <Image src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2316a34a%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M4%208h12v5a4%204%200%200%201-4%204H8a4%204%200%200%201-4-4z%22%2F%3E%3Cpath%20d%3D%22M16%209h2.5a2.5%202.5%200%200%201%200%205H16%22%2F%3E%3Cpath%20d%3D%22M7%202.5v2M10%202v2.5M13%202.5v2%22%2F%3E%3C%2Fsvg%3E" width="1.6rem" height="1.6rem"/>
+                        </VBox>
+                        <VBox class="sapUiSmallMarginBegin" alignItems="Center">
                             <Text text="CAFÉS HOJE" class="kpiLabel"/>
                             <Text text="{/coffeesToday}" class="kpiNumber"/>
                             <Text text="Total preparados" class="kpiCaption"/>
                         </VBox>
                     </HBox>
-                    <Text text="{/changeText}" class="{/changeClass} sapUiSmallMarginTop"/>
+                    <HBox class="trendPill sapUiSmallMarginTop" justifyContent="SpaceBetween" alignItems="Center">
+                        <Text text="{/changeText}" class="{/changeClass}"/>
+                        <Image src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2024%22%20fill%3D%22none%22%20stroke%3D%22%2316a34a%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M2%2018L12%2012L20%2015L30%207L38%2010L46%203%22%2F%3E%3Cpath%20d%3D%22M40%203h6v6%22%2F%3E%3C%2Fsvg%3E" width="2.5rem" height="1.25rem"/>
+                    </HBox>
                 </VBox>
 
+                <!-- Último café -->
                 <VBox class="kpiCard">
-                    <HBox alignItems="Center">
-                        <Text text="🕘" class="kpiIcon kpiIconGreen"/>
-                        <VBox class="sapUiSmallMarginBegin">
+                    <HBox alignItems="Center" justifyContent="Center">
+                        <VBox class="kpiIcon kpiIconGreen">
+                            <Image src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2316a34a%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M3%2012a9%209%200%201%200%203-6.7L3%208%22%2F%3E%3Cpath%20d%3D%22M3%204v4h4%22%2F%3E%3Cpath%20d%3D%22M12%207v5l3%202%22%2F%3E%3C%2Fsvg%3E" width="1.6rem" height="1.6rem"/>
+                        </VBox>
+                        <VBox class="sapUiSmallMarginBegin" alignItems="Center">
                             <Text text="ÚLTIMO CAFÉ" class="kpiLabel"/>
                             <Text text="{/lastUsedDate}" class="kpiNumberSm"/>
                             <Text text="{/lastUsedTime}" class="kpiCaption"/>
                         </VBox>
                     </HBox>
+                    <HBox class="statusPill sapUiSmallMarginTop" justifyContent="SpaceBetween" alignItems="Center">
+                        <Text text="{/lastStatusText}" class="kpiUp"/>
+                        <Text text="›" class="kpiCaption"/>
+                    </HBox>
                 </VBox>
 
+                <!-- Agora -->
                 <VBox class="kpiCard">
-                    <HBox alignItems="Center">
-                        <Text text="🕐" class="kpiIcon kpiIconBlue"/>
-                        <VBox class="sapUiSmallMarginBegin">
+                    <HBox alignItems="Center" justifyContent="Center">
+                        <core:HTML content="&lt;div class=&quot;clockFace&quot;&gt;&lt;div class=&quot;hand hourHand&quot;&gt;&lt;/div&gt;&lt;div class=&quot;hand minuteHand&quot;&gt;&lt;/div&gt;&lt;div class=&quot;hand secondHand&quot;&gt;&lt;/div&gt;&lt;div class=&quot;clockCenter&quot;&gt;&lt;/div&gt;&lt;/div&gt;"/>
+                        <VBox class="sapUiSmallMarginBegin" alignItems="Center">
                             <Text text="AGORA" class="kpiLabel"/>
                             <Text text="{/clockTime}" class="kpiNumberSm"/>
                             <Text text="{/clockDate}" class="kpiCaption"/>
-                            <Text text="{/systemActiveText}" class="kpiCaption sapUiTinyMarginTop"/>
                         </VBox>
+                    </HBox>
+                    <HBox class="activePill sapUiSmallMarginTop" justifyContent="Center" alignItems="Center">
+                        <Text text="{/systemActiveText}" class="kpiUp"/>
                     </HBox>
                 </VBox>
             </l:Grid>

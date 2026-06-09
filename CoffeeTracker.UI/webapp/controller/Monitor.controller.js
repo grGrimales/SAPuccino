@@ -17,6 +17,7 @@ sap.ui.define([
                 changeClass: "kpiCaption",
                 lastUsedDate: "—",
                 lastUsedTime: "",
+                lastStatusText: "Sem cafés ainda",
                 clockTime: "--:--:--",
                 clockDate: "",
                 systemActiveText: "",
@@ -43,6 +44,32 @@ sap.ui.define([
                     this._model.setProperty("/connectionText", text);
                 }.bind(this)
             });
+        },
+
+        // Sincroniza as ponteiras do relógio analógico com a hora atual.
+        // A animação em CSS gira sozinha; aqui só definimos o ponto de partida.
+        onAfterRendering: function () {
+            if (this._clockSynced) {
+                return;
+            }
+            const root = this.getView().getDomRef();
+            if (!root) {
+                return;
+            }
+            const hour = root.querySelector(".hourHand");
+            const minute = root.querySelector(".minuteHand");
+            const second = root.querySelector(".secondHand");
+            if (!hour || !minute || !second) {
+                return;
+            }
+            const now = new Date();
+            const s = now.getSeconds();
+            const m = now.getMinutes();
+            const h = now.getHours() % 12;
+            second.style.animationDelay = (-s) + "s";
+            minute.style.animationDelay = (-(m * 60 + s)) + "s";
+            hour.style.animationDelay = (-(h * 3600 + m * 60 + s)) + "s";
+            this._clockSynced = true;
         },
 
         onExit: function () {
@@ -116,6 +143,7 @@ sap.ui.define([
             this._model.setProperty("/coffeesToday", status.coffeesToday);
             this._model.setProperty("/lastUsedDate", this._formatDate(status.lastUsedUtc));
             this._model.setProperty("/lastUsedTime", this._formatTime(status.lastUsedUtc));
+            this._model.setProperty("/lastStatusText", status.lastUsedUtc ? "✓ Concluído com sucesso" : "Sem cafés ainda");
 
             // Um café novo (ou mudança de estado) também atualiza os KPIs e o histórico.
             this._refreshDashboard();

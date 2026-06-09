@@ -216,6 +216,75 @@
     font-style: italic;
 }
 
+/* ----- Faixas inferiores dos cartões (pills) ----- */
+.trendPill,
+.statusPill,
+.activePill {
+    background: #f1f6f2;
+    border-radius: 0.75rem;
+    padding: 0.55rem 0.9rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* ----- Relógio analógico (AGORA), animado só com CSS ----- */
+.clockFace {
+    position: relative;
+    width: 4.6rem;
+    height: 4.6rem;
+    min-width: 4.6rem;
+    border-radius: 50%;
+    border: 4px solid #e5e7eb;
+    background: #ffffff;
+}
+
+.hand {
+    position: absolute;
+    left: 50%;
+    bottom: 50%;
+    transform-origin: bottom center;
+    border-radius: 2px;
+    background: #374151;
+}
+
+.hourHand {
+    width: 3px;
+    height: 1.15rem;
+    margin-left: -1.5px;
+    animation: clockspin 43200s linear infinite;
+}
+
+.minuteHand {
+    width: 2px;
+    height: 1.6rem;
+    margin-left: -1px;
+    animation: clockspin 3600s linear infinite;
+}
+
+.secondHand {
+    width: 1px;
+    height: 1.8rem;
+    margin-left: -0.5px;
+    background: #dc2626;
+    animation: clockspin 60s linear infinite;
+}
+
+.clockCenter {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 7px;
+    height: 7px;
+    margin: -3.5px 0 0 -3.5px;
+    border-radius: 50%;
+    background: #374151;
+}
+
+@keyframes clockspin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
 /* ----- Gráfico de barras (Detalhamento) feito em CSS, sem libs extras ----- */
 .barRow {
     display: flex;
