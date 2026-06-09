@@ -141,19 +141,21 @@
                     </VBox>
                     <Text text="DISPONIBILIDADE" class="sectionTitle sapUiSmallMarginBegin"/>
                 </HBox>
-                <HBox class="barTrack barTrackTall sapUiSmallMarginBottom" width="100%">
-                    <HBox class="barFill" width="{/uptimeWidth}"/>
-                </HBox>
-                <l:Grid defaultSpan="L3 M6 S12" hSpacing="1" vSpacing="1">
-                    <VBox>
-                        <Text text="{/uptimePercent}%" class="kpiNumberGreen"/>
-                        <Text text="uptime no período" class="kpiCaption"/>
-                    </VBox>
-                    <VBox>
+                <HBox alignItems="End" wrap="Wrap" class="sapUiSmallMarginTop">
+                    <HBox alignItems="End" class="sapUiLargeMarginEnd">
+                        <VBox class="uptimeColArea" justifyContent="End">
+                            <VBox class="uptimeColBar" height="{/uptimeWidth}"/>
+                        </VBox>
+                        <VBox class="sapUiSmallMarginBegin">
+                            <Text text="{/uptimePercent}%" class="kpiNumberGreen"/>
+                            <Text text="uptime no período" class="kpiCaption"/>
+                        </VBox>
+                    </HBox>
+                    <VBox class="sapUiLargeMarginEnd">
                         <Text text="{/currentStateText}" class="kpiNumberSm"/>
                         <Text text="estado atual" class="kpiCaption"/>
                     </VBox>
-                    <VBox>
+                    <VBox class="sapUiLargeMarginEnd">
                         <Text text="{/outages}" class="kpiNumberSm"/>
                         <Text text="quedas" class="kpiCaption"/>
                     </VBox>
@@ -161,7 +163,7 @@
                         <Text text="{/longestOutageText}" class="kpiNumberSm"/>
                         <Text text="maior queda" class="kpiCaption"/>
                     </VBox>
-                </l:Grid>
+                </HBox>
             </VBox>
 
             <Text

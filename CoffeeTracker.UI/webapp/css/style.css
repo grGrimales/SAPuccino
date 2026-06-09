@@ -454,6 +454,23 @@
     height: 1.5rem;
 }
 
+/* ----- Coluna vertical (gráfico de colunas) ----- */
+.uptimeColArea {
+    height: 7rem;
+    width: 2rem;
+    background: #eef0f3;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.uptimeColBar {
+    width: 100%;
+    background: linear-gradient(180deg, #22c55e, #15803d);
+    border-radius: 0.5rem 0.5rem 0 0;
+    min-height: 3px;
+    transition: height 0.4s ease;
+}
+
 .barFill {
     background: linear-gradient(90deg, #15803d, #22c55e);
     height: 100%;
