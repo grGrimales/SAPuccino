@@ -45,11 +45,6 @@ sap.ui.define([
             this.getOwnerComponent().getRouter().navTo("monitor");
         },
 
-        onPeriodChange: function (event) {
-            this._model.setProperty("/periodDays", event.getParameter("item").getKey());
-            this._loadReports();
-        },
-
         _loadReports: function () {
             const days = parseInt(this._model.getProperty("/periodDays"), 10) || 7;
 
@@ -84,8 +79,7 @@ sap.ui.define([
                 this._model.setProperty("/busiestDayCaption", "");
             }
 
-            // Série por dia: últimos 15 dias (label + count) para o ColumnMicroChart.
-            // Série por dia como colunas de largura fixa (últimos 15 dias), com rótulo dd/MM.
+            // Série por dia: colunas de largura fixa dos últimos 15 dias (rótulo dd/MM).
             const dailyAll = report.daily || [];
             const dailyRecent = dailyAll.slice(-15);
             const maxDaily = Math.max(1, ...dailyRecent.map(function (d) { return d.count; }));
@@ -122,8 +116,7 @@ sap.ui.define([
             }.bind(this)));
         },
 
-        // Agrega "Cafés por mês" de um período longo (180 dias), agrupado por ano,
-        // e prepara as abas de ano (2025 / 2026).
+        // Agrega "Cafés por mês" do período longo, agrupado por ano, e prepara as abas de ano.
         _applyMonthly: function (report) {
             if (!report) {
                 return;

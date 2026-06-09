@@ -250,14 +250,6 @@ sap.ui.define([
             return hours + "h " + (minutes % 60) + "m";
         },
 
-        // { hour, count } -> "13h (5)".
-        _formatPeakHour: function (peak) {
-            if (!peak) {
-                return "—";
-            }
-            return peak.hour + "h (" + peak.count + ")";
-        },
-
         _round: function (value) {
             return Math.round((value || 0) * 10) / 10;
         }
