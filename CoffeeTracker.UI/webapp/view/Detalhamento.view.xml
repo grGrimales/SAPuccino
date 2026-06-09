@@ -131,7 +131,7 @@
                     <Text text="DISTRIBUIÇÃO POR HORA" class="sectionTitle sapUiSmallMarginBegin"/>
                 </HBox>
                 <Text text="Consumo ao longo do dia — a linha sobe nas horas com mais cafés." class="kpiCaption"/>
-                <VBox height="7rem" width="100%" class="sapUiTinyMarginTop">
+                <VBox height="7rem" width="100%" class="hourLineChart sapUiTinyMarginTop">
                     <micro:LineMicroChart
                         size="Responsive"
                         color="#16a34a"

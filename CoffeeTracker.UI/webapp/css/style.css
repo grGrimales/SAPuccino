@@ -454,6 +454,13 @@
     height: 1.5rem;
 }
 
+/* Afina a linha do LineMicroChart (o tema deixa grossa demais). */
+.hourLineChart svg polyline,
+.hourLineChart svg path,
+.hourLineChart svg line {
+    stroke-width: 1.3px !important;
+}
+
 /* ----- Coluna vertical (gráfico de colunas) ----- */
 .uptimeColArea {
     height: 7rem;
