@@ -16,8 +16,7 @@ sap.ui.define([
                 peakHourText: "—",
                 daily: [],
                 monthly: [],
-                hourly: [],
-                hourlyLineSvg: "",
+                hourlyPoints: [],
                 uptimePercent: 0,
                 uptimeWidth: "0%",
                 currentStateText: "—",
@@ -74,74 +73,36 @@ sap.ui.define([
                 this._model.setProperty("/busiestDayCaption", "");
             }
 
-            // Série por dia: só os últimos 15 dias (mais legível em períodos longos).
+            // Série por dia: últimos 15 dias (label + count) para o ColumnMicroChart.
             const dailyAll = report.daily || [];
-            const dailyRecent = dailyAll.slice(-15);
-            const maxDaily = Math.max(1, ...dailyRecent.map(function (d) { return d.count; }));
-            this._model.setProperty("/daily", dailyRecent.map(function (d) {
-                return {
-                    label: this._formatDayLabel(d.date),
-                    value: String(d.count),
-                    width: ((d.count / maxDaily) * 100).toFixed(1) + "%"
-                };
+            this._model.setProperty("/daily", dailyAll.slice(-15).map(function (d) {
+                return { label: this._formatDayLabel(d.date), count: d.count };
             }.bind(this)));
 
-            // Série por mês: agrega os dias do período por mês (yyyy-MM).
+            // Série por mês: últimos 12 meses (preenche os meses com dados, resto 0).
             const byMonth = {};
             dailyAll.forEach(function (d) {
                 const ym = d.date.slice(0, 7);
                 byMonth[ym] = (byMonth[ym] || 0) + d.count;
             });
-            const months = Object.keys(byMonth).sort();
             const monthNames = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
-            const maxMonth = Math.max(1, ...months.map(function (ym) { return byMonth[ym]; }));
-            this._model.setProperty("/monthly", months.map(function (ym) {
-                const monthIndex = parseInt(ym.slice(5, 7), 10) - 1;
-                return {
-                    label: monthNames[monthIndex],
-                    value: String(byMonth[ym]),
-                    width: ((byMonth[ym] / maxMonth) * 100).toFixed(1) + "%"
-                };
-            }));
-
-            // Distribuição por hora (apenas horas com algum café, para não poluir).
-            const hourly = (report.hourly || []).filter(function (h) { return h.count > 0; });
-            const maxHourly = Math.max(1, ...hourly.map(function (h) { return h.count; }));
-            this._model.setProperty("/hourly", hourly.map(function (h) {
-                return {
-                    label: this._pad(h.hour) + "h",
-                    value: String(h.count),
-                    width: ((h.count / maxHourly) * 100).toFixed(1) + "%"
-                };
-            }.bind(this)));
-
-            // Linha (curva) com as 24 horas: a linha sobe nas horas de mais consumo.
-            this._model.setProperty("/hourlyLineSvg", this._buildHourlyLineSvg(report.hourly || []));
-        },
-
-        // Constrói um SVG (data URI) com a linha de consumo das 24 horas do dia.
-        _buildHourlyLineSvg: function (hourlyAll) {
-            if (!hourlyAll.length) {
-                return "";
+            const ref = (report.toDate || "").split("-");
+            const refYear = parseInt(ref[0], 10) || 2026;
+            const refMonth = parseInt(ref[1], 10) || 1;
+            const monthly = [];
+            for (let i = 11; i >= 0; i--) {
+                let mm = refMonth - i;
+                let yy = refYear;
+                while (mm <= 0) { mm += 12; yy -= 1; }
+                const ym = yy + "-" + String(mm).padStart(2, "0");
+                monthly.push({ label: monthNames[mm - 1], count: byMonth[ym] || 0 });
             }
-            const width = 240;
-            const height = 80;
-            const pad = 6;
-            const maxCount = Math.max(1, ...hourlyAll.map(function (h) { return h.count; }));
-            const points = hourlyAll.map(function (h, index) {
-                const x = pad + (index / (hourlyAll.length - 1)) * (width - 2 * pad);
-                const y = height - pad - (h.count / maxCount) * (height - 2 * pad);
-                return x.toFixed(1) + "," + y.toFixed(1);
-            });
-            const line = points.join(" ");
-            const area = "M" + points.join(" L") +
-                " L" + (width - pad).toFixed(1) + "," + (height - pad) +
-                " L" + pad + "," + (height - pad) + " Z";
-            const svg = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 " + width + " " + height + "' preserveAspectRatio='none'>" +
-                "<path d='" + area + "' fill='#16a34a' opacity='0.12'/>" +
-                "<polyline fill='none' stroke='#16a34a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' points='" + line + "'/>" +
-                "</svg>";
-            return "data:image/svg+xml," + encodeURIComponent(svg);
+            this._model.setProperty("/monthly", monthly);
+
+            // Distribuição por hora: pontos (x = hora, y = cafés) para o LineMicroChart.
+            this._model.setProperty("/hourlyPoints", (report.hourly || []).map(function (h) {
+                return { x: h.hour, y: h.count };
+            }));
         },
 
         _applyAvailability: function (availability) {

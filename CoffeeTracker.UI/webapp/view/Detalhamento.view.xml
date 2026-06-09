@@ -3,6 +3,7 @@
     xmlns="sap.m"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:l="sap.ui.layout"
+    xmlns:micro="sap.suite.ui.microchart"
     displayBlock="true"
     height="100%">
     <Page id="detalhamentoPage" showHeader="false" class="sapuccinoApp">
@@ -94,15 +95,13 @@
                     <Text text="CAFÉS POR DIA" class="sectionTitle sapUiSmallMarginBegin"/>
                 </HBox>
                 <Text text="Cafés preparados nos últimos 15 dias." class="kpiCaption"/>
-                <HBox class="colChartFlex" alignItems="End" items="{/daily}">
-                    <VBox class="colItemFlex" alignItems="Center" justifyContent="End">
-                        <Text text="{value}" class="colValueXs"/>
-                        <VBox class="colBarArea colBarAreaFlex" justifyContent="End">
-                            <VBox class="colBar" height="{width}"/>
-                        </VBox>
-                        <Text text="{label}" class="colLabelXs"/>
-                    </VBox>
-                </HBox>
+                <VBox height="9rem" width="100%" class="sapUiTinyMarginTop">
+                    <micro:ColumnMicroChart size="Responsive" allowColumnLabels="true" columns="{/daily}">
+                        <micro:columns>
+                            <micro:ColumnMicroChartData value="{count}" color="Good" label="{label}"/>
+                        </micro:columns>
+                    </micro:ColumnMicroChart>
+                </VBox>
             </VBox>
 
             <!-- Gráfico: cafés por mês. -->
@@ -113,16 +112,14 @@
                     </VBox>
                     <Text text="CAFÉS POR MÊS" class="sectionTitle sapUiSmallMarginBegin"/>
                 </HBox>
-                <Text text="Total de cafés agrupado por mês no período." class="kpiCaption"/>
-                <HBox class="colChartFlex" alignItems="End" items="{/monthly}">
-                    <VBox class="colItemFlex" alignItems="Center" justifyContent="End">
-                        <Text text="{value}" class="colValueXs"/>
-                        <VBox class="colBarArea colBarAreaFlex" justifyContent="End">
-                            <VBox class="colBar" height="{width}"/>
-                        </VBox>
-                        <Text text="{label}" class="colLabelXs"/>
-                    </VBox>
-                </HBox>
+                <Text text="Total de cafés por mês (últimos 12 meses)." class="kpiCaption"/>
+                <VBox height="9rem" width="100%" class="sapUiTinyMarginTop">
+                    <micro:ColumnMicroChart size="Responsive" allowColumnLabels="true" columns="{/monthly}">
+                        <micro:columns>
+                            <micro:ColumnMicroChartData value="{count}" color="Good" label="{label}"/>
+                        </micro:columns>
+                    </micro:ColumnMicroChart>
+                </VBox>
             </VBox>
 
             <!-- Gráfico: distribuição por hora. -->
@@ -134,14 +131,18 @@
                     <Text text="DISTRIBUIÇÃO POR HORA" class="sectionTitle sapUiSmallMarginBegin"/>
                 </HBox>
                 <Text text="Consumo ao longo do dia — a linha sobe nas horas com mais cafés." class="kpiCaption"/>
-                <Image src="{/hourlyLineSvg}" width="100%" height="6rem" densityAware="false" class="sapUiTinyMarginTop"/>
-                <HBox justifyContent="SpaceBetween" class="sapUiTinyMarginTop">
-                    <Text text="0h" class="colLabelXs"/>
-                    <Text text="6h" class="colLabelXs"/>
-                    <Text text="12h" class="colLabelXs"/>
-                    <Text text="18h" class="colLabelXs"/>
-                    <Text text="23h" class="colLabelXs"/>
-                </HBox>
+                <VBox height="7rem" width="100%" class="sapUiTinyMarginTop">
+                    <micro:LineMicroChart
+                        size="Responsive"
+                        color="#16a34a"
+                        leftBottomLabel="0h"
+                        rightBottomLabel="23h"
+                        points="{/hourlyPoints}">
+                        <micro:points>
+                            <micro:LineMicroChartPoint x="{x}" y="{y}"/>
+                        </micro:points>
+                    </micro:LineMicroChart>
+                </VBox>
             </VBox>
 
             <!-- Disponibilidade / uptime. -->
@@ -153,12 +154,11 @@
                     <Text text="DISPONIBILIDADE" class="sectionTitle sapUiSmallMarginBegin"/>
                 </HBox>
                 <HBox alignItems="End" wrap="Wrap" class="sapUiSmallMarginTop">
-                    <HBox alignItems="End" class="sapUiLargeMarginEnd">
-                        <VBox class="uptimeColArea" justifyContent="End">
-                            <VBox class="uptimeColBar" height="{/uptimeWidth}"/>
+                    <HBox alignItems="Center" class="sapUiLargeMarginEnd">
+                        <VBox height="4.5rem" width="4.5rem">
+                            <micro:RadialMicroChart size="Responsive" percentage="{/uptimePercent}" valueColor="Good"/>
                         </VBox>
                         <VBox class="sapUiSmallMarginBegin">
-                            <Text text="{/uptimePercent}%" class="kpiNumberGreen"/>
                             <Text text="uptime no período" class="kpiCaption"/>
                         </VBox>
                     </HBox>

@@ -519,7 +519,8 @@
 .colChartFlex {
     display: flex;
     align-items: flex-end;
-    gap: 0.25rem;
+    justify-content: center;
+    gap: 0.4rem;
     padding: 0.5rem 0;
     width: 100%;
 }
@@ -527,10 +528,12 @@
 .colItemFlex {
     flex: 1 1 0;
     min-width: 0;
+    max-width: 2.6rem;
 }
 
 .colBarAreaFlex {
-    width: 100%;
+    width: 70%;
+    height: 4.5rem;
 }
 
 .colValueXs {
