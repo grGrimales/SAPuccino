@@ -93,8 +93,28 @@
                     </VBox>
                     <Text text="CAFÉS POR DIA" class="sectionTitle sapUiSmallMarginBegin"/>
                 </HBox>
-                <Text text="Cafés preparados a cada dia do período." class="kpiCaption"/>
+                <Text text="Cafés preparados nos últimos 15 dias." class="kpiCaption"/>
                 <HBox class="colChartFlex" alignItems="End" items="{/daily}">
+                    <VBox class="colItemFlex" alignItems="Center" justifyContent="End">
+                        <Text text="{value}" class="colValueXs"/>
+                        <VBox class="colBarArea colBarAreaFlex" justifyContent="End">
+                            <VBox class="colBar" height="{width}"/>
+                        </VBox>
+                        <Text text="{label}" class="colLabelXs"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <!-- Gráfico: cafés por mês. -->
+            <VBox class="kpiCard sapUiSmallMargin">
+                <HBox alignItems="Center" class="sapUiTinyMarginBottom">
+                    <VBox class="kpiIconSm kpiIconGreen" justifyContent="Center" alignItems="Center">
+                        <Image src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2316a34a%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20x%3D%223%22%20y%3D%224.5%22%20width%3D%2218%22%20height%3D%2216%22%20rx%3D%222%22%2F%3E%3Cpath%20d%3D%22M3%209h18M8%202.5v4M16%202.5v4%22%2F%3E%3C%2Fsvg%3E" width="1.2rem" height="1.2rem"/>
+                    </VBox>
+                    <Text text="CAFÉS POR MÊS" class="sectionTitle sapUiSmallMarginBegin"/>
+                </HBox>
+                <Text text="Total de cafés agrupado por mês no período." class="kpiCaption"/>
+                <HBox class="colChartFlex" alignItems="End" items="{/monthly}">
                     <VBox class="colItemFlex" alignItems="Center" justifyContent="End">
                         <Text text="{value}" class="colValueXs"/>
                         <VBox class="colBarArea colBarAreaFlex" justifyContent="End">

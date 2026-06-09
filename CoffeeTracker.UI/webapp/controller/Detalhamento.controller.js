@@ -15,6 +15,7 @@ sap.ui.define([
                 busiestDayCaption: "",
                 peakHourText: "—",
                 daily: [],
+                monthly: [],
                 hourly: [],
                 hourlyLineSvg: "",
                 uptimePercent: 0,
@@ -73,16 +74,35 @@ sap.ui.define([
                 this._model.setProperty("/busiestDayCaption", "");
             }
 
-            // Série por dia (barras proporcionais ao maior valor).
-            const daily = report.daily || [];
-            const maxDaily = Math.max(1, ...daily.map(function (d) { return d.count; }));
-            this._model.setProperty("/daily", daily.map(function (d) {
+            // Série por dia: só os últimos 15 dias (mais legível em períodos longos).
+            const dailyAll = report.daily || [];
+            const dailyRecent = dailyAll.slice(-15);
+            const maxDaily = Math.max(1, ...dailyRecent.map(function (d) { return d.count; }));
+            this._model.setProperty("/daily", dailyRecent.map(function (d) {
                 return {
                     label: this._formatDayLabel(d.date),
                     value: String(d.count),
                     width: ((d.count / maxDaily) * 100).toFixed(1) + "%"
                 };
             }.bind(this)));
+
+            // Série por mês: agrega os dias do período por mês (yyyy-MM).
+            const byMonth = {};
+            dailyAll.forEach(function (d) {
+                const ym = d.date.slice(0, 7);
+                byMonth[ym] = (byMonth[ym] || 0) + d.count;
+            });
+            const months = Object.keys(byMonth).sort();
+            const monthNames = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+            const maxMonth = Math.max(1, ...months.map(function (ym) { return byMonth[ym]; }));
+            this._model.setProperty("/monthly", months.map(function (ym) {
+                const monthIndex = parseInt(ym.slice(5, 7), 10) - 1;
+                return {
+                    label: monthNames[monthIndex],
+                    value: String(byMonth[ym]),
+                    width: ((byMonth[ym] / maxMonth) * 100).toFixed(1) + "%"
+                };
+            }));
 
             // Distribuição por hora (apenas horas com algum café, para não poluir).
             const hourly = (report.hourly || []).filter(function (h) { return h.count > 0; });
