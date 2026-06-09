@@ -114,8 +114,12 @@
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
-    text-align: center;
-    line-height: 3rem;
+}
+
+/* Centraliza a imagem (SVG) dentro do círculo. */
+.kpiIcon img {
+    display: block;
+    margin: 0;
 }
 
 .kpiIconSm {
@@ -214,6 +218,31 @@
     color: #9ca3af;
     font-size: 0.7rem;
     font-style: italic;
+}
+
+/* ----- Linha de 3 cartões do mesmo tamanho (largura e altura) ----- */
+.cardThird {
+    width: 32.5%;
+    box-sizing: border-box;
+}
+
+/* Área superior do cartão: ícone flutua à esquerda, texto centralizado. */
+.cardTopRel {
+    position: relative;
+    width: 100%;
+}
+
+.cardIconAbs {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+/* Empurra o rodapé (pill) para a base, deixando os cartões alinhados. */
+.cardSpacer {
+    flex: 1 1 auto;
 }
 
 /* ----- Faixas inferiores dos cartões (pills) ----- */
