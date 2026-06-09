@@ -93,20 +93,16 @@
                     </VBox>
                     <Text text="CAFÉS POR DIA" class="sectionTitle sapUiSmallMarginBegin"/>
                 </HBox>
-                <List
-                    items="{/daily}"
-                    noDataText="Sem dados no período."
-                    showSeparators="None">
-                    <CustomListItem>
-                        <HBox class="barRow" alignItems="Center">
-                            <Text text="{label}" class="barLabel"/>
-                            <HBox class="barTrack">
-                                <HBox class="barFill" width="{width}"/>
-                            </HBox>
-                            <Text text="{value}" class="barValue"/>
-                        </HBox>
-                    </CustomListItem>
-                </List>
+                <Text text="Cafés preparados a cada dia do período." class="kpiCaption"/>
+                <HBox class="colChartFlex" alignItems="End" items="{/daily}">
+                    <VBox class="colItemFlex" alignItems="Center" justifyContent="End">
+                        <Text text="{value}" class="colValueXs"/>
+                        <VBox class="colBarArea colBarAreaFlex" justifyContent="End">
+                            <VBox class="colBar" height="{width}"/>
+                        </VBox>
+                        <Text text="{label}" class="colLabelXs"/>
+                    </VBox>
+                </HBox>
             </VBox>
 
             <!-- Gráfico: distribuição por hora. -->
@@ -117,18 +113,15 @@
                     </VBox>
                     <Text text="DISTRIBUIÇÃO POR HORA" class="sectionTitle sapUiSmallMarginBegin"/>
                 </HBox>
-                <Text text="Quantos cafés foram preparados em cada hora do dia." class="kpiCaption"/>
-                <ScrollContainer horizontal="true" vertical="false" width="100%" class="sapUiTinyMarginTop">
-                    <HBox class="colChart" items="{/hourly}">
-                        <VBox class="colItem" alignItems="Center" justifyContent="End">
-                            <Text text="{value}" class="colValue"/>
-                            <VBox class="colBarArea" justifyContent="End">
-                                <VBox class="colBar" height="{width}"/>
-                            </VBox>
-                            <Text text="{label}" class="colLabel"/>
-                        </VBox>
-                    </HBox>
-                </ScrollContainer>
+                <Text text="Consumo ao longo do dia — a linha sobe nas horas com mais cafés." class="kpiCaption"/>
+                <Image src="{/hourlyLineSvg}" width="100%" height="6rem" densityAware="false" class="sapUiTinyMarginTop"/>
+                <HBox justifyContent="SpaceBetween" class="sapUiTinyMarginTop">
+                    <Text text="0h" class="colLabelXs"/>
+                    <Text text="6h" class="colLabelXs"/>
+                    <Text text="12h" class="colLabelXs"/>
+                    <Text text="18h" class="colLabelXs"/>
+                    <Text text="23h" class="colLabelXs"/>
+                </HBox>
             </VBox>
 
             <!-- Disponibilidade / uptime. -->

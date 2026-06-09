@@ -16,6 +16,7 @@ sap.ui.define([
                 peakHourText: "—",
                 daily: [],
                 hourly: [],
+                hourlyLineSvg: "",
                 uptimePercent: 0,
                 uptimeWidth: "0%",
                 currentStateText: "—",
@@ -93,6 +94,34 @@ sap.ui.define([
                     width: ((h.count / maxHourly) * 100).toFixed(1) + "%"
                 };
             }.bind(this)));
+
+            // Linha (curva) com as 24 horas: a linha sobe nas horas de mais consumo.
+            this._model.setProperty("/hourlyLineSvg", this._buildHourlyLineSvg(report.hourly || []));
+        },
+
+        // Constrói um SVG (data URI) com a linha de consumo das 24 horas do dia.
+        _buildHourlyLineSvg: function (hourlyAll) {
+            if (!hourlyAll.length) {
+                return "";
+            }
+            const width = 240;
+            const height = 80;
+            const pad = 6;
+            const maxCount = Math.max(1, ...hourlyAll.map(function (h) { return h.count; }));
+            const points = hourlyAll.map(function (h, index) {
+                const x = pad + (index / (hourlyAll.length - 1)) * (width - 2 * pad);
+                const y = height - pad - (h.count / maxCount) * (height - 2 * pad);
+                return x.toFixed(1) + "," + y.toFixed(1);
+            });
+            const line = points.join(" ");
+            const area = "M" + points.join(" L") +
+                " L" + (width - pad).toFixed(1) + "," + (height - pad) +
+                " L" + pad + "," + (height - pad) + " Z";
+            const svg = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 " + width + " " + height + "' preserveAspectRatio='none'>" +
+                "<path d='" + area + "' fill='#16a34a' opacity='0.12'/>" +
+                "<polyline fill='none' stroke='#16a34a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' points='" + line + "'/>" +
+                "</svg>";
+            return "data:image/svg+xml," + encodeURIComponent(svg);
         },
 
         _applyAvailability: function (availability) {

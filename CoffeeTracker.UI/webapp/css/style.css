@@ -514,6 +514,41 @@
     text-align: center;
 }
 
+/* Variante que preenche a largura (cafés por dia): colunas dividem o
+   espaço e ficam mais finas conforme aumentam os dias (sem scroll). */
+.colChartFlex {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.25rem;
+    padding: 0.5rem 0;
+    width: 100%;
+}
+
+.colItemFlex {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.colBarAreaFlex {
+    width: 100%;
+}
+
+.colValueXs {
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: #111827;
+    text-align: center;
+    overflow: hidden;
+}
+
+.colLabelXs {
+    font-size: 0.58rem;
+    color: #6b7280;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
 .barFill {
     background: linear-gradient(90deg, #15803d, #22c55e);
     height: 100%;
