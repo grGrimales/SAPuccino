@@ -177,11 +177,21 @@ sap.ui.define([
         // ----- Helpers de apresentação -----
         _applyHeroClass: function (heroClass) {
             const hero = this.byId("heroBanner");
-            if (!hero) {
-                return;
+            if (hero) {
+                hero.removeStyleClass("heroInUse").removeStyleClass("heroAvailable").removeStyleClass("heroOffline");
+                hero.addStyleClass(heroClass);
             }
-            hero.removeStyleClass("heroInUse").removeStyleClass("heroAvailable").removeStyleClass("heroOffline");
-            hero.addStyleClass(heroClass);
+
+            // Acento da página (ícones/rodapés) muda conforme o estado.
+            const page = this.byId("monitorPage");
+            if (page) {
+                page.removeStyleClass("stateInUse").removeStyleClass("stateOffline");
+                if (heroClass === "heroInUse") {
+                    page.addStyleClass("stateInUse");
+                } else if (heroClass === "heroOffline") {
+                    page.addStyleClass("stateOffline");
+                }
+            }
         },
 
         _tickClock: function () {

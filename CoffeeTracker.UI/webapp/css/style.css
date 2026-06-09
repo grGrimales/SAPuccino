@@ -1,8 +1,57 @@
 /* Estilos do SAPuccino — replica o painel do diseño (Monitor + Detalhamento). */
 
-/* Fundo geral levemente acinzentado, como no diseño. */
+/* Fundo geral levemente acinzentado, como no diseño.
+   As variáveis de acento mudam conforme o estado da máquina. */
 .sapuccinoApp {
     background-color: #f3f4f6;
+    --accent: #16a34a;        /* verde (disponível) */
+    --accent-soft: #e7f4ea;
+}
+
+.sapuccinoApp.stateInUse {
+    --accent: #dc2626;        /* vermelho (em uso) */
+    --accent-soft: #fdebeb;
+}
+
+.sapuccinoApp.stateOffline {
+    --accent: #6b7280;        /* cinza (offline) */
+    --accent-soft: #eef0f2;
+}
+
+/* Ícone recolorível pela variável de acento (usa o SVG como máscara). */
+.maskIcon {
+    display: inline-block;
+    background-color: var(--accent);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+}
+
+.maskCup {
+    width: 1.6rem;
+    height: 1.6rem;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M4%208h12v5a4%204%200%200%201-4%204H8a4%204%200%200%201-4-4z%22%2F%3E%3Cpath%20d%3D%22M16%209h2.5a2.5%202.5%200%200%201%200%205H16%22%2F%3E%3Cpath%20d%3D%22M7%202.5v2M10%202v2.5M13%202.5v2%22%2F%3E%3C%2Fsvg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M4%208h12v5a4%204%200%200%201-4%204H8a4%204%200%200%201-4-4z%22%2F%3E%3Cpath%20d%3D%22M16%209h2.5a2.5%202.5%200%200%201%200%205H16%22%2F%3E%3Cpath%20d%3D%22M7%202.5v2M10%202v2.5M13%202.5v2%22%2F%3E%3C%2Fsvg%3E");
+}
+
+.maskTrend {
+    width: 2.6rem;
+    height: 1.25rem;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2024%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M2%2018L12%2012L20%2015L30%207L38%2010L46%203%22%2F%3E%3Cpath%20d%3D%22M40%203h6v6%22%2F%3E%3C%2Fsvg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2024%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M2%2018L12%2012L20%2015L30%207L38%2010L46%203%22%2F%3E%3Cpath%20d%3D%22M40%203h6v6%22%2F%3E%3C%2Fsvg%3E");
+}
+
+/* Acento dependente do estado (usado no cartão "Cafés hoje"). */
+.accentSoftBg {
+    background: var(--accent-soft) !important;
+}
+
+.accentText {
+    color: var(--accent) !important;
+    font-weight: 700;
 }
 
 /* Cabeçalho da marca (dentro da faixa colorida, texto branco). */
@@ -139,7 +188,7 @@
 }
 
 .kpiIconGreen {
-    background: #e6f4ea;
+    background: #e7f4ea;
 }
 
 .kpiIconBlue {
@@ -247,14 +296,33 @@
 }
 
 /* ----- Faixas inferiores dos cartões (pills) ----- */
-.trendPill,
-.statusPill,
-.activePill {
-    background: #e8f6ee;
+.trendPill {
+    background: var(--accent-soft);
     border-radius: 0.75rem;
     padding: 0.55rem 0.9rem;
     width: 100%;
     box-sizing: border-box;
+}
+
+.statusPill {
+    background: #e7f4ea;
+    border-radius: 0.75rem;
+    padding: 0.55rem 0.9rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* "Sistema ativo": pill pequeno tipo botão (cartão AGORA). */
+.activeBtn {
+    background: #e7f4ea;
+    border-radius: 1rem;
+    padding: 0.35rem 1rem;
+}
+
+.activeBtnText {
+    color: #15803d;
+    font-weight: 600;
+    font-size: 0.85rem;
 }
 
 /* ----- Relógio analógico (AGORA), animado só com CSS ----- */
