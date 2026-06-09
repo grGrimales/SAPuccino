@@ -32,11 +32,35 @@
 
 /* ----- Faixa de estado (hero) ----- */
 .heroBanner {
+    position: relative;
+    overflow: hidden;
     padding: 2.5rem 1.5rem;
     text-align: center;
     color: #ffffff;
     transition: background 0.4s ease;
     background: linear-gradient(135deg, #6b7280, #4b5563);
+}
+
+/* Marca d'água da xícara (como no diseño), atrás do conteúdo, à direita. */
+.heroBanner::after {
+    content: "";
+    position: absolute;
+    top: 1.5rem;
+    right: 2.5rem;
+    width: 13rem;
+    height: 13rem;
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%20fill%3D%22none%22%20stroke%3D%22white%22%20stroke-width%3D%222.2%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M25%207c-2.5%203%202.5%205%200%208%22%2F%3E%3Cpath%20d%3D%22M32%205c-2.5%203%202.5%205%200%208%22%2F%3E%3Cpath%20d%3D%22M39%207c-2.5%203%202.5%205%200%208%22%2F%3E%3Cpath%20d%3D%22M13%2025h31v10a13%2013%200%200%201-13%2013H26A13%2013%200%200%201%2013%2035z%22%2F%3E%3Cpath%20d%3D%22M44%2028h5a6%206%200%200%201%200%2012h-5%22%2F%3E%3Cpath%20d%3D%22M11%2053h35%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+    opacity: 0.12;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Mantém o conteúdo da faixa acima da marca d'água. */
+.heroBanner > * {
+    position: relative;
+    z-index: 1;
 }
 
 .heroBanner.heroInUse {
