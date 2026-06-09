@@ -13,7 +13,8 @@ public sealed class ConsumptionReportService(
     TimeZoneInfo timeZone) : IConsumptionReportService
 {
     // Limite de segurança para o período solicitado (evita varreduras enormes).
-    private const int MaxDays = 90;
+    // Ampliado para permitir a visão mensal (vários meses) no Detalhamento.
+    private const int MaxDays = 400;
 
     public async Task<ConsumptionReport> GetReportAsync(
         int days,

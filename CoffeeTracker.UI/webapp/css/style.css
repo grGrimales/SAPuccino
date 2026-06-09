@@ -454,6 +454,20 @@
     height: 1.5rem;
 }
 
+/* Espaço lateral para o gráfico não colar nas bordas do cartão. */
+.chartPad {
+    padding: 0 0.75rem;
+    box-sizing: border-box;
+}
+
+/* Faz o microchart preencher o contêiner (senão renderiza pequeno). */
+.chartFill .sapSuiteClMC,
+.chartFill .sapSuiteLMC,
+.chartFill .sapSuiteRMC {
+    width: 100% !important;
+    height: 100% !important;
+}
+
 /* Afina a linha do LineMicroChart (o tema deixa grossa demais). */
 .hourLineChart svg polyline,
 .hourLineChart svg path,

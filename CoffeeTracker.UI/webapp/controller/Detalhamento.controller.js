@@ -15,6 +15,8 @@ sap.ui.define([
                 busiestDayCaption: "",
                 peakHourText: "—",
                 daily: [],
+                dailyFirstLabel: "",
+                dailyLastLabel: "",
                 monthly: [],
                 hourlyPoints: [],
                 uptimePercent: 0,
@@ -54,6 +56,11 @@ sap.ui.define([
             CoffeeService.getAvailability(days)
                 .then(this._applyAvailability.bind(this))
                 .catch(function () { /* depende do banco */ });
+
+            // O gráfico "Cafés por mês" usa um período longo (independente do seletor 7/30/90).
+            CoffeeService.getReports(180)
+                .then(this._applyMonthly.bind(this))
+                .catch(function () { /* depende do banco */ });
         },
 
         _applyReport: function (report) {
@@ -75,34 +82,46 @@ sap.ui.define([
 
             // Série por dia: últimos 15 dias (label + count) para o ColumnMicroChart.
             const dailyAll = report.daily || [];
-            this._model.setProperty("/daily", dailyAll.slice(-15).map(function (d) {
-                return { label: this._formatDayLabel(d.date), count: d.count };
-            }.bind(this)));
-
-            // Série por mês: últimos 12 meses (preenche os meses com dados, resto 0).
-            const byMonth = {};
-            dailyAll.forEach(function (d) {
-                const ym = d.date.slice(0, 7);
-                byMonth[ym] = (byMonth[ym] || 0) + d.count;
-            });
-            const monthNames = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
-            const ref = (report.toDate || "").split("-");
-            const refYear = parseInt(ref[0], 10) || 2026;
-            const refMonth = parseInt(ref[1], 10) || 1;
-            const monthly = [];
-            for (let i = 11; i >= 0; i--) {
-                let mm = refMonth - i;
-                let yy = refYear;
-                while (mm <= 0) { mm += 12; yy -= 1; }
-                const ym = yy + "-" + String(mm).padStart(2, "0");
-                monthly.push({ label: monthNames[mm - 1], count: byMonth[ym] || 0 });
-            }
-            this._model.setProperty("/monthly", monthly);
+            const dailyRecent = dailyAll.slice(-15);
+            this._model.setProperty("/daily", dailyRecent.map(function (d) {
+                return { label: d.date.slice(8, 10), count: d.count };
+            }));
+            this._model.setProperty("/dailyFirstLabel", dailyRecent.length ? this._formatDayLabel(dailyRecent[0].date) : "");
+            this._model.setProperty("/dailyLastLabel", dailyRecent.length ? this._formatDayLabel(dailyRecent[dailyRecent.length - 1].date) : "");
 
             // Distribuição por hora: pontos (x = hora, y = cafés) para o LineMicroChart.
             this._model.setProperty("/hourlyPoints", (report.hourly || []).map(function (h) {
                 return { x: h.hour, y: h.count };
             }));
+        },
+
+        // Constrói a série "Cafés por mês" a partir de um período longo (180 dias),
+        // com meses contíguos do primeiro ao último com dados.
+        _applyMonthly: function (report) {
+            if (!report) {
+                return;
+            }
+            const byMonth = {};
+            (report.daily || []).forEach(function (d) {
+                const ym = d.date.slice(0, 7);
+                byMonth[ym] = (byMonth[ym] || 0) + d.count;
+            });
+            const monthNames = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+            const ymKeys = Object.keys(byMonth).sort();
+            const monthly = [];
+            if (ymKeys.length) {
+                let y = parseInt(ymKeys[0].slice(0, 4), 10);
+                let m = parseInt(ymKeys[0].slice(5, 7), 10);
+                const lastY = parseInt(ymKeys[ymKeys.length - 1].slice(0, 4), 10);
+                const lastM = parseInt(ymKeys[ymKeys.length - 1].slice(5, 7), 10);
+                while (y < lastY || (y === lastY && m <= lastM)) {
+                    const ym = y + "-" + String(m).padStart(2, "0");
+                    monthly.push({ label: monthNames[m - 1], count: byMonth[ym] || 0 });
+                    m += 1;
+                    if (m > 12) { m = 1; y += 1; }
+                }
+            }
+            this._model.setProperty("/monthly", monthly);
         },
 
         _applyAvailability: function (availability) {
