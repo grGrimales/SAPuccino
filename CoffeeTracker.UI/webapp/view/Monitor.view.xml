@@ -78,20 +78,17 @@
                 </VBox>
 
                 <!-- Agora -->
-                <VBox class="kpiCard cardThird">
+                <VBox class="kpiCard cardThird" justifyContent="Center">
                     <HBox alignItems="Center" justifyContent="Center">
                         <core:HTML content="&lt;div class=&quot;clockFace&quot;&gt;&lt;div class=&quot;hand hourHand&quot;&gt;&lt;/div&gt;&lt;div class=&quot;hand minuteHand&quot;&gt;&lt;/div&gt;&lt;div class=&quot;hand secondHand&quot;&gt;&lt;/div&gt;&lt;div class=&quot;clockCenter&quot;&gt;&lt;/div&gt;&lt;/div&gt;"/>
                         <VBox class="sapUiSmallMarginBegin" alignItems="Center">
                             <Text text="AGORA" class="kpiLabel"/>
                             <Text text="{/clockTime}" class="kpiNumberSm"/>
                             <Text text="{/clockDate}" class="kpiCaption"/>
+                            <HBox class="activeBtn sapUiSmallMarginTop" alignItems="Center">
+                                <Text text="{/systemActiveText}" class="activeBtnText"/>
+                            </HBox>
                         </VBox>
-                    </HBox>
-                    <VBox class="cardSpacer"/>
-                    <HBox class="sapUiSmallMarginTop" justifyContent="Center" alignItems="Center">
-                        <HBox class="activeBtn" alignItems="Center">
-                            <Text text="{/systemActiveText}" class="activeBtnText"/>
-                        </HBox>
                     </HBox>
                 </VBox>
             </HBox>
