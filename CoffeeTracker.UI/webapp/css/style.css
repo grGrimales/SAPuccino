@@ -435,6 +435,13 @@
     flex: 0 0 auto;
 }
 
+.barLabelSm {
+    width: 3.5rem;
+    font-size: 0.8rem;
+    color: #6b7280;
+    flex: 0 0 auto;
+}
+
 .barTrack {
     flex: 1 1 auto;
     background: #eef0f3;
@@ -443,8 +450,12 @@
     height: 1.1rem;
 }
 
+.barTrackTall {
+    height: 1.5rem;
+}
+
 .barFill {
-    background: linear-gradient(90deg, #c0161c, #e0474c);
+    background: linear-gradient(90deg, #15803d, #22c55e);
     height: 100%;
     border-radius: 0.5rem;
     min-width: 2px;

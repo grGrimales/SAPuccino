@@ -17,6 +17,7 @@ sap.ui.define([
                 daily: [],
                 hourly: [],
                 uptimePercent: 0,
+                uptimeWidth: "0%",
                 currentStateText: "—",
                 outages: 0,
                 longestOutageText: "—"
@@ -78,7 +79,7 @@ sap.ui.define([
                 return {
                     label: this._formatDayLabel(d.date),
                     value: String(d.count),
-                    percent: (d.count / maxDaily) * 100
+                    width: ((d.count / maxDaily) * 100).toFixed(1) + "%"
                 };
             }.bind(this)));
 
@@ -89,7 +90,7 @@ sap.ui.define([
                 return {
                     label: this._pad(h.hour) + "h",
                     value: String(h.count),
-                    percent: (h.count / maxHourly) * 100
+                    width: ((h.count / maxHourly) * 100).toFixed(1) + "%"
                 };
             }.bind(this)));
         },
@@ -99,6 +100,7 @@ sap.ui.define([
                 return;
             }
             this._model.setProperty("/uptimePercent", this._round(availability.uptimePercent));
+            this._model.setProperty("/uptimeWidth", this._round(availability.uptimePercent) + "%");
             this._model.setProperty("/currentStateText", availability.currentState === "online" ? "Online" : "Offline");
             this._model.setProperty("/outages", availability.outages);
             this._model.setProperty("/longestOutageText", this._formatDuration(availability.longestOutageSeconds));
