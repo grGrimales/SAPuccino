@@ -87,13 +87,22 @@
                     </VBox>
                     <Text text="CAFÉS POR DIA" class="sectionTitle sapUiSmallMarginBegin"/>
                 </HBox>
-                <HBox class="colChartFlex sapUiTinyMarginTop" items="{/daily}">
-                    <VBox class="colItemFlex" alignItems="Center" justifyContent="End">
-                        <Text text="{value}" class="colValueXs"/>
-                        <VBox class="colBarArea colBarAreaFlex" justifyContent="End">
-                            <VBox class="colBar" height="{height}"/>
-                        </VBox>
-                        <Text text="{label}" class="colLabelXs"/>
+                <HBox alignItems="Center" wrap="Wrap">
+                    <VBox class="dailyColsWrap">
+                        <HBox class="colChartFlex sapUiTinyMarginTop" items="{/daily}">
+                            <VBox class="colItemFlex" alignItems="Center" justifyContent="End">
+                                <Text text="{value}" class="colValueXs"/>
+                                <VBox class="colBarArea colBarAreaFlex" justifyContent="End">
+                                    <VBox class="colBar" height="{height}"/>
+                                </VBox>
+                                <Text text="{label}" class="colLabelXs"/>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                    <VBox class="totalCard" alignItems="Center" justifyContent="Center">
+                        <Text text="TOTAL SEMANA" class="kpiLabel"/>
+                        <Text text="{/weekTotal}" class="totalNumber"/>
+                        <Text text="cafés · últimos 7 dias" class="kpiCaption"/>
                     </VBox>
                 </HBox>
             </VBox>
@@ -114,13 +123,27 @@
                     </VBox>
                     <Text text="CAFÉS POR MÊS" class="sectionTitle sapUiSmallMarginBegin"/>
                 </HBox>
-                <HBox class="colChartFlex sapUiTinyMarginTop" items="{/monthly}">
-                    <VBox class="colItemFlex" alignItems="Center" justifyContent="End">
-                        <Text text="{value}" class="colValueXs"/>
-                        <VBox class="colBarArea colBarAreaFlex" justifyContent="End">
-                            <VBox class="colBar" height="{height}"/>
-                        </VBox>
-                        <Text text="{label}" class="colLabelXs"/>
+                <HBox alignItems="Center" wrap="Wrap">
+                    <VBox class="dailyColsWrap">
+                        <HBox class="colChartFlex sapUiTinyMarginTop" items="{/monthly}">
+                            <VBox class="colItemFlex" alignItems="Center" justifyContent="End">
+                                <Text text="{value}" class="colValueXs"/>
+                                <VBox class="colBarArea colBarAreaFlex" justifyContent="End">
+                                    <VBox class="colBar" height="{height}"/>
+                                </VBox>
+                                <Text text="{label}" class="colLabelXs"/>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                    <VBox class="totalCard" alignItems="Center" justifyContent="Center">
+                        <Text text="TOTAL DO ANO" class="kpiLabel"/>
+                        <Text text="{/yearTotal}" class="totalNumber"/>
+                        <Text text="cafés · {/selectedYear}" class="kpiCaption"/>
+                    </VBox>
+                    <VBox class="totalCard totalCardAlt" alignItems="Center" justifyContent="Center">
+                        <Text text="MÉDIA/MÊS" class="kpiLabel"/>
+                        <Text text="{/yearAvg}" class="totalNumber totalNumberAlt"/>
+                        <Text text="cafés/mês" class="kpiCaption"/>
                     </VBox>
                 </HBox>
             </VBox>

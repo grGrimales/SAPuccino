@@ -15,7 +15,10 @@ sap.ui.define([
                 busiestDayCaption: "",
                 peakHourText: "—",
                 daily: [],
+                weekTotal: 0,
                 monthly: [],
+                yearTotal: 0,
+                yearAvg: 0,
                 monthlyYears: [],
                 selectedYear: "",
                 peakHours: [],
@@ -93,6 +96,11 @@ sap.ui.define([
                     height: ((d.count / maxDaily) * 100).toFixed(1) + "%"
                 };
             }.bind(this)));
+
+            // Total da última semana (7 dias) para o cartão lateral.
+            this._model.setProperty("/weekTotal", dailyAll.slice(-7).reduce(function (sum, d) {
+                return sum + d.count;
+            }, 0));
 
             // Distribuição por hora: pontos (x = hora, y = cafés) para o LineMicroChart.
             this._model.setProperty("/hourlyPoints", (report.hourly || []).map(function (h) {
@@ -172,6 +180,9 @@ sap.ui.define([
                     height: ((o.count / maxMonth) * 100).toFixed(1) + "%"
                 };
             }));
+            const yearTotal = months.reduce(function (sum, o) { return sum + o.count; }, 0);
+            this._model.setProperty("/yearTotal", yearTotal);
+            this._model.setProperty("/yearAvg", months.length ? Math.round(yearTotal / months.length) : 0);
         },
 
         // Monta as abas de ano como botões próprios (verde no selecionado).

@@ -300,6 +300,38 @@
     line-height: 1;
 }
 
+/* Cartão lateral "Total semana" ao lado das colunas de dias. */
+.dailyColsWrap {
+    flex: 1 1 16rem;
+    min-width: 0;
+}
+
+.totalCard {
+    flex: 0 0 auto;
+    background: #e7f4ea;
+    border-radius: 0.9rem;
+    padding: 1rem 1.5rem;
+    margin: 0.5rem 0 0.5rem 0.9rem;
+    min-width: 9rem;
+    text-align: center;
+}
+
+.totalNumber {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: #16a34a;
+    line-height: 1.1;
+}
+
+/* Segundo cartão (média) em âmbar, para diferenciar do total verde. */
+.totalCardAlt {
+    background: #fef3e0;
+}
+
+.totalNumberAlt {
+    color: #f59e0b;
+}
+
 /* Filtro de ano (tabs) — borda verde, selecionado verde com texto branco. */
 .yearLabel {
     color: #6b7280;
