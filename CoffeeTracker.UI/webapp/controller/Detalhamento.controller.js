@@ -8,16 +8,17 @@ sap.ui.define([
     return Controller.extend("sapuccino.controller.Detalhamento", {
         onInit: function () {
             this._model = new JSONModel({
-                periodDays: "7",
+                periodDays: "30",
                 totalCoffees: 0,
                 averagePerDay: 0,
                 busiestDayText: "—",
                 busiestDayCaption: "",
                 peakHourText: "—",
                 daily: [],
-                dailyFirstLabel: "",
-                dailyLastLabel: "",
                 monthly: [],
+                monthlyYears: [],
+                selectedYear: "",
+                peakHours: [],
                 hourlyPoints: [],
                 uptimePercent: 0,
                 uptimeWidth: "0%",
@@ -81,47 +82,101 @@ sap.ui.define([
             }
 
             // Série por dia: últimos 15 dias (label + count) para o ColumnMicroChart.
+            // Série por dia como colunas de largura fixa (últimos 15 dias), com rótulo dd/MM.
             const dailyAll = report.daily || [];
             const dailyRecent = dailyAll.slice(-15);
+            const maxDaily = Math.max(1, ...dailyRecent.map(function (d) { return d.count; }));
             this._model.setProperty("/daily", dailyRecent.map(function (d) {
-                return { label: d.date.slice(8, 10), count: d.count };
-            }));
-            this._model.setProperty("/dailyFirstLabel", dailyRecent.length ? this._formatDayLabel(dailyRecent[0].date) : "");
-            this._model.setProperty("/dailyLastLabel", dailyRecent.length ? this._formatDayLabel(dailyRecent[dailyRecent.length - 1].date) : "");
+                return {
+                    label: this._formatDayLabel(d.date),
+                    value: String(d.count),
+                    height: ((d.count / maxDaily) * 100).toFixed(1) + "%"
+                };
+            }.bind(this)));
 
             // Distribuição por hora: pontos (x = hora, y = cafés) para o LineMicroChart.
             this._model.setProperty("/hourlyPoints", (report.hourly || []).map(function (h) {
                 return { x: h.hour, y: h.count };
             }));
+
+            // Horários de pico: as 3 horas com mais cafés no período.
+            const topHours = (report.hourly || [])
+                .filter(function (h) { return h.count > 0; })
+                .sort(function (a, b) { return b.count - a.count; })
+                .slice(0, 3);
+            const medals = ["🥇", "🥈", "🥉"];
+            this._model.setProperty("/peakHours", topHours.map(function (h, index) {
+                return {
+                    rank: medals[index] || ("#" + (index + 1)),
+                    hour: this._pad(h.hour) + "h",
+                    countText: h.count + " cafés"
+                };
+            }.bind(this)));
         },
 
-        // Constrói a série "Cafés por mês" a partir de um período longo (180 dias),
-        // com meses contíguos do primeiro ao último com dados.
+        // Agrega "Cafés por mês" de um período longo (180 dias), agrupado por ano,
+        // e prepara as abas de ano (2025 / 2026).
         _applyMonthly: function (report) {
             if (!report) {
                 return;
             }
+            const monthNames = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
             const byMonth = {};
             (report.daily || []).forEach(function (d) {
                 const ym = d.date.slice(0, 7);
                 byMonth[ym] = (byMonth[ym] || 0) + d.count;
             });
-            const monthNames = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
-            const ymKeys = Object.keys(byMonth).sort();
-            const monthly = [];
-            if (ymKeys.length) {
-                let y = parseInt(ymKeys[0].slice(0, 4), 10);
-                let m = parseInt(ymKeys[0].slice(5, 7), 10);
-                const lastY = parseInt(ymKeys[ymKeys.length - 1].slice(0, 4), 10);
-                const lastM = parseInt(ymKeys[ymKeys.length - 1].slice(5, 7), 10);
-                while (y < lastY || (y === lastY && m <= lastM)) {
-                    const ym = y + "-" + String(m).padStart(2, "0");
-                    monthly.push({ label: monthNames[m - 1], count: byMonth[ym] || 0 });
-                    m += 1;
-                    if (m > 12) { m = 1; y += 1; }
+
+            // Para cada ano com dados, monta os meses contíguos (do 1º ao último com dados).
+            const byYear = {};
+            Object.keys(byMonth).forEach(function (ym) {
+                const year = ym.slice(0, 4);
+                byYear[year] = byYear[year] || {};
+                byYear[year][parseInt(ym.slice(5, 7), 10)] = byMonth[ym];
+            });
+            const monthsByYear = {};
+            Object.keys(byYear).forEach(function (year) {
+                const monthsObj = byYear[year];
+                const present = Object.keys(monthsObj).map(Number).sort(function (a, b) { return a - b; });
+                const months = [];
+                for (let m = present[0]; m <= present[present.length - 1]; m++) {
+                    months.push({ label: monthNames[m - 1], count: monthsObj[m] || 0 });
                 }
+                monthsByYear[year] = months;
+            });
+            this._monthsByYear = monthsByYear;
+
+            const years = Object.keys(this._monthsByYear).sort();
+            this._model.setProperty("/monthlyYears", years.map(function (y) {
+                return { key: y, text: y };
+            }));
+
+            // Ano selecionado: mantém o atual se ainda existir, senão o mais recente.
+            let selected = this._model.getProperty("/selectedYear");
+            if (years.indexOf(selected) < 0) {
+                selected = years.length ? years[years.length - 1] : "";
+                this._model.setProperty("/selectedYear", selected);
             }
-            this._model.setProperty("/monthly", monthly);
+            this._renderMonthly(selected);
+        },
+
+        // Renderiza as colunas do ano selecionado.
+        _renderMonthly: function (year) {
+            const months = (this._monthsByYear && this._monthsByYear[year]) || [];
+            const maxMonth = Math.max(1, ...months.map(function (o) { return o.count; }));
+            this._model.setProperty("/monthly", months.map(function (o) {
+                return {
+                    label: o.label,
+                    value: String(o.count),
+                    height: ((o.count / maxMonth) * 100).toFixed(1) + "%"
+                };
+            }));
+        },
+
+        onYearChange: function (event) {
+            const year = event.getParameter("item").getKey();
+            this._model.setProperty("/selectedYear", year);
+            this._renderMonthly(year);
         },
 
         _applyAvailability: function (availability) {

@@ -294,6 +294,20 @@
     font-size: 0.95rem;
 }
 
+/* Medalha dos horários de pico. */
+.peakRank {
+    font-size: 1.7rem;
+    line-height: 1;
+}
+
+/* Filtro de ano (tabs) — usa o estilo nativo do SegmentedButton. */
+.yearLabel {
+    color: #6b7280;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+}
+
 /* Marca visual para cartões/dados sem sensor real (apenas ilustrativos). */
 .mockTag {
     color: #9ca3af;
@@ -537,24 +551,25 @@
 
 /* Variante que preenche a largura (cafés por dia): colunas dividem o
    espaço e ficam mais finas conforme aumentam os dias (sem scroll). */
+/* Colunas de largura fixa: ao haver mais barras, o gráfico se estende
+   para a direita (scroll horizontal), em vez de espremer as colunas. */
 .colChartFlex {
     display: flex;
     align-items: flex-end;
-    justify-content: center;
-    gap: 0.4rem;
-    padding: 0.5rem 0;
+    justify-content: flex-start;
+    gap: 1.1rem;
+    padding: 0.5rem 0.25rem;
     width: 100%;
+    overflow-x: auto;
 }
 
 .colItemFlex {
-    flex: 1 1 0;
-    min-width: 0;
-    max-width: 2.6rem;
+    flex: 0 0 2.6rem;
 }
 
 .colBarAreaFlex {
-    width: 70%;
-    height: 4.5rem;
+    width: 100%;
+    height: 7rem;
 }
 
 .colValueXs {

@@ -103,7 +103,8 @@ sap.ui.define([
         _refreshEvents: function () {
             CoffeeService.getEvents()
                 .then(function (events) {
-                    const items = (events || []).map(function (event) {
+                    // Apenas os 5 cafés mais recentes (a lista vem do mais novo ao mais antigo).
+                    const items = (events || []).slice(0, 5).map(function (event) {
                         return { time: this._formatTime(event.occurredAtUtc) };
                     }.bind(this));
                     this._model.setProperty("/recentEvents", items);
