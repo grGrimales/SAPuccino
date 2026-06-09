@@ -98,14 +98,12 @@
                 </HBox>
             </VBox>
 
-            <!-- Filtro de ano (fora do cartão), à direita. -->
+            <!-- Filtro de ano (fora do cartão), à direita — botões próprios. -->
             <HBox justifyContent="End" alignItems="Center" class="sapUiSmallMarginBeginEnd sapUiSmallMarginTop">
                 <Text text="Ano" class="yearLabel sapUiTinyMarginEnd"/>
-                <SegmentedButton class="yearTabs" selectedKey="{/selectedYear}" selectionChange="onYearChange" items="{/monthlyYears}">
-                    <items>
-                        <SegmentedButtonItem key="{key}" text="{text}"/>
-                    </items>
-                </SegmentedButton>
+                <HBox class="yearTabsBox" items="{/monthlyYears}">
+                    <Button text="{text}" press="onYearPress" class="{cls}"/>
+                </HBox>
             </HBox>
 
             <!-- Gráfico: cafés por mês. -->

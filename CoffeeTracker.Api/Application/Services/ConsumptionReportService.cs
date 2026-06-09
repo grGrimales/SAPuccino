@@ -14,7 +14,7 @@ public sealed class ConsumptionReportService(
 {
     // Limite de segurança para o período solicitado (evita varreduras enormes).
     // Ampliado para permitir a visão mensal (vários meses) no Detalhamento.
-    private const int MaxDays = 400;
+    private const int MaxDays = 700;
 
     public async Task<ConsumptionReport> GetReportAsync(
         int days,

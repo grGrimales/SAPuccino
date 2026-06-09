@@ -300,12 +300,38 @@
     line-height: 1;
 }
 
-/* Filtro de ano (tabs) — usa o estilo nativo do SegmentedButton. */
+/* Filtro de ano (tabs) — borda verde, selecionado verde com texto branco. */
 .yearLabel {
     color: #6b7280;
     font-size: 0.8rem;
     font-weight: 600;
     letter-spacing: 0.04em;
+}
+
+.yearTabsBox {
+    gap: 0.4rem;
+}
+
+/* Botão de ano não selecionado: contorno verde, texto verde. */
+.yearBtn .sapMBtnInner {
+    background: #ffffff !important;
+    border: 1px solid #16a34a !important;
+    border-radius: 0.6rem !important;
+    box-shadow: none !important;
+}
+
+.yearBtn .sapMBtnContent {
+    color: #16a34a !important;
+}
+
+/* Botão de ano selecionado: verde cheio, texto branco. */
+.yearBtnSel .sapMBtnInner {
+    background: #16a34a !important;
+    border: 1px solid #16a34a !important;
+}
+
+.yearBtnSel .sapMBtnContent {
+    color: #ffffff !important;
 }
 
 /* Marca visual para cartões/dados sem sensor real (apenas ilustrativos). */

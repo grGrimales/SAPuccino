@@ -59,7 +59,7 @@ sap.ui.define([
                 .catch(function () { /* depende do banco */ });
 
             // O gráfico "Cafés por mês" usa um período longo (independente do seletor 7/30/90).
-            CoffeeService.getReports(180)
+            CoffeeService.getReports(540)
                 .then(this._applyMonthly.bind(this))
                 .catch(function () { /* depende do banco */ });
         },
@@ -130,6 +130,9 @@ sap.ui.define([
             // Para cada ano com dados, monta os meses contíguos (do 1º ao último com dados).
             const byYear = {};
             Object.keys(byMonth).forEach(function (ym) {
+                if (byMonth[ym] <= 0) {
+                    return; // ignora meses sem cafés (ex.: borda do período)
+                }
                 const year = ym.slice(0, 4);
                 byYear[year] = byYear[year] || {};
                 byYear[year][parseInt(ym.slice(5, 7), 10)] = byMonth[ym];
@@ -146,17 +149,15 @@ sap.ui.define([
             });
             this._monthsByYear = monthsByYear;
 
-            const years = Object.keys(this._monthsByYear).sort();
-            this._model.setProperty("/monthlyYears", years.map(function (y) {
-                return { key: y, text: y };
-            }));
+            this._years = Object.keys(this._monthsByYear).sort();
 
             // Ano selecionado: mantém o atual se ainda existir, senão o mais recente.
             let selected = this._model.getProperty("/selectedYear");
-            if (years.indexOf(selected) < 0) {
-                selected = years.length ? years[years.length - 1] : "";
+            if (this._years.indexOf(selected) < 0) {
+                selected = this._years.length ? this._years[this._years.length - 1] : "";
                 this._model.setProperty("/selectedYear", selected);
             }
+            this._setYearTabs();
             this._renderMonthly(selected);
         },
 
@@ -173,9 +174,18 @@ sap.ui.define([
             }));
         },
 
-        onYearChange: function (event) {
-            const year = event.getParameter("item").getKey();
+        // Monta as abas de ano como botões próprios (verde no selecionado).
+        _setYearTabs: function () {
+            const selected = this._model.getProperty("/selectedYear");
+            this._model.setProperty("/monthlyYears", (this._years || []).map(function (y) {
+                return { key: y, text: y, cls: y === selected ? "yearBtn yearBtnSel" : "yearBtn" };
+            }));
+        },
+
+        onYearPress: function (event) {
+            const year = event.getSource().getBindingContext().getProperty("key");
             this._model.setProperty("/selectedYear", year);
+            this._setYearTabs();
             this._renderMonthly(year);
         },
 
